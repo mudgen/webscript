@@ -1,4 +1,4 @@
-import elementBuilders from "../../webscript.js"
+import elementBuilders from "../webscript.js"
 
 const { body, div, p, a, img } = elementBuilders();
 

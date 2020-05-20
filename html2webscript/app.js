@@ -2,7 +2,7 @@
 /* eslint-disable no-unexpected-multiline */
 
 import { constructElement } from './libs/viv.js';
-import elementBuilders from '../../webscript.js'
+import elementBuilders from '../webscript.js'
 import examples from './examples.js';
 //import minify = require('html-minifier-terser');
 
