@@ -12,7 +12,7 @@ HTML:
 ```
 
 Webscript:
-
+{: .fs-6 }
 ```javascript
 div`card-image`(
   img.src`images/sample-1.jpg`,
