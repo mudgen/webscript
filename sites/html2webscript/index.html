@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Convert HTML to Webscript</title>
+  <meta name="description" content="Convert HTML to Webscript">
+  <meta name="author" content="Nick Mudge">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="libs/codemirror/codemirror.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+  <link rel="icon" type="image/png" href="favicon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="favicon/favicon-32x32.png" sizes="32x32">
+  <style>
+    #header {
+      background: rgb(229, 237, 255);
+      background: linear-gradient(0deg, rgba(229, 237, 255, 1) 30%, rgba(194, 204, 227, 1) 100%);
+    }
+  </style>
+</head>
+
+<body>
+  <script src="libs/codemirror/codemirror.js"></script>
+  <script src="libs/codemirror/mode/xml/xml.js"></script>
+  <script src="libs/codemirror/mode/javascript/javascript.js"></script>
+  <script src="libs/codemirror/placeholder.js"></script>
+  <script src="libs/terser/bundle.min.js"></script>
+  <script src="libs/htmlminifier.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>
