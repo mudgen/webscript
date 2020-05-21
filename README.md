@@ -37,5 +37,7 @@ Of course, with Javascript we can go far beyond just telling the browser what DO
 
 *Why Webscript? Because Javascript works best with Javascript and Webscript is Javascript.*
 
+# Server Side
 
+Webscript can be used on the server to generate HTML to feed search engines or for other reasons.
 
