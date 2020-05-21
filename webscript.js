@@ -41,7 +41,10 @@ function joinStringsAndArgs(args) {
   }
   return result.join("");
 }
-export default function elementBuilders(elementConstructor = createElement, elements = []) {
+
+
+
+function elementBuilderBuilder(elementConstructor, element) {
   function getPropertyValue(...args) {
     let [first] = args;
     if (typeof first === "undefined") {
@@ -50,16 +53,16 @@ export default function elementBuilders(elementConstructor = createElement, elem
     else if (Array.isArray(first) && Object.isFrozen(first)) {
       first = joinStringsAndArgs(args);
     }
-    let { tagName, props, prop } = this.__element_info__;
+    let { props, prop } = this.__element_info__;
     props = { [prop]: first, ...props }
-    return createElementBuilder({ tagName, props, prop: null });
+    return elementBuilder({ props, prop: null });
   }
   function getPropsValues(props) {
-    let { tagName, props: existingProps } = this.__element_info__;
+    let { props: existingProps } = this.__element_info__;
     props = { ...props, ...existingProps }
-    return createElementBuilder({ tagName, props, prop: null });
+    return elementBuilder({ props, prop: null });
   }
-  function createElementBuilder(info) {
+  function elementBuilder(propsInfo) {
     let builder = new Proxy(() => { }, {
       apply(target, thisArg, args) {
         let [first] = args;
@@ -75,9 +78,9 @@ export default function elementBuilders(elementConstructor = createElement, elem
           if (value.length > 0) {
             newProps["className"] = value.join(" ");
           }
-          let { tagName, props } = builder.__element_info__;
+          let { props } = builder.__element_info__;
           props = { ...newProps, ...props }
-          return createElementBuilder({ tagName, props, prop: null });
+          return elementBuilder({ props, prop: null });
         }
         else {
           for (let i = 0; i < args.length; i++) {
@@ -86,8 +89,8 @@ export default function elementBuilders(elementConstructor = createElement, elem
               args[i] = arg();
             }
           }
-          let { tagName, props } = builder.__element_info__;
-          return elementConstructor(tagName, props, ...args);
+          let { props } = builder.__element_info__;
+          return elementConstructor(element, props, ...args);
         }
       },
       get(target, prop) {
@@ -112,28 +115,43 @@ export default function elementBuilders(elementConstructor = createElement, elem
         return true;
       }
     })
-    builder.__element_info__ = info;
+    builder.__element_info__ = propsInfo;
     return builder;
   }
+  return elementBuilder({ props: {}, prop: null });
+}
+
+
+function elementBuildersBuilder(elementConstructor = createElement, elements = []) {
+  if (Object.prototype.toString.call(elementConstructor) === '[object Object]') {
+    elementConstructor = elementConstructor["elementConstructor"] || createElement;
+    elements = elementConstructor["elements"] || [];
+  }
+  elementConstructor = elementConstructor || createElement;
   if (elements.length > 0) {
     let builders = [];
-    for (const el of elements) {
-      builders.push(createElementBuilder({ tagName: el, props: {}, prop: null }));
+    for (const element of elements) {
+      builders.push(elementBuilderBuilder(elementConstructor, element));
     }
     return builders;
   }
   else {
-    return new Proxy(Object.create(null), {
-      get: function (target, prop) {
+    return new Proxy(() => { }, {
+      apply(target, thisArg, args) {
+        return elementBuildersBuilder(...args);
+      },
+      get(target, prop) {
         const result = target[prop];
         if (typeof result !== "undefined") {
           return result;
         }
-        const tagName = prop;
-        target[prop] = createElementBuilder({ tagName, props: {}, prop: null });
+        target[prop] = elementBuilderBuilder(elementConstructor, prop);
         return target[prop];
       }
-    })
+    });
   }
 }
+
+const elementBuilders = elementBuildersBuilder();
+export default elementBuilders;
 

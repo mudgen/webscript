@@ -1,6 +1,6 @@
 import elementBuilders from "../webscript.js"
 
-const { body, div, p, a, img } = elementBuilders();
+const { body, div, p, a, img } = elementBuilders;
 
 const app =
   body`bg-indigo-100`(
