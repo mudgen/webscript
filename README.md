@@ -25,7 +25,7 @@ You might not believe it or think it at first but HTML and Javascript don't go t
 
 [JSX](https://reactjs.org/docs/jsx-in-depth.html) is a compiler on top of Javascript that puts HTML in Javascript. The many templating languages such as used by [Vue](https://vuejs.org/v2/guide/syntax.html) and other frameworks try to put Javascript or custom programming languages into HTML.
 
-If Javascript and HTML went together, they would just be used together. But they don't go together. They are oil and water. Hence all the solutions to make them work together better.
+If Javascript and HTML went together, they would just be used together. But they don't go together. They are forced together this way and that way. They are oil and water.
 
 If you think about it, it makes sense that they don't go together. They have difference purposes. HTML is a markup language with a very specific purpose: create static documents that link to each other. Javascript is a general purpose programming language for creating custom software. If Javascript and HTML met at a bar, they wouldn't talk to each other. They happen to be married to the same woman, the browser, so they deal with each other. It is time to stop messing around and decide on *one* of them and the choice is obvious.
 
