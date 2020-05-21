@@ -30,7 +30,7 @@ npm install webscript
 Or use a CDN:
 
 ```
-<script src="https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js"></script>
 ```
 # Why?
 
@@ -53,5 +53,10 @@ Of course, with Javascript we can go far beyond just telling the browser what DO
 # Server Side
 
 Webscript can be used on the server to generate HTML to feed search engines or for other reasons.
+
+# Usage 
+
+```
+import elementBuilders from '
 
 
