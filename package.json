@@ -1,0 +1,30 @@
+{
+  "name": "webscript",
+  "version": "1.0.0",
+  "description": "HTML replacement.  Better Javascript syntax for creating web (pages/sites/apps).",
+  "type": "module",
+  "main": "webscript.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify": "terser webscript.js --module -o webscript.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mudgen/webscript.git"
+  },
+  "keywords": [
+    "javascript",
+    "webdev",
+    "html",
+    "dom"
+  ],
+  "author": "Nick Mudge <nick@perfectabstractions.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mudgen/webscript/issues"
+  },
+  "homepage": "https://github.com/mudgen/webscript#readme"
+}

@@ -19,6 +19,19 @@ div`card-image`(
 ```
 
 [See more examples.](https://mudgen.github.io/webscript/html2webscript/#bulma-card)
+
+# Installation
+webscript.js is an ES6 module. It has zero dependencies.
+
+```
+npm install webscript
+```
+
+Or use a CDN:
+
+```
+<script src="https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js"></script>
+```
 # Why?
 
 You might not believe it or think it at first but HTML and Javascript don't go together well. They started out together and have been together so long that it might seem normal they are used together. Take a step back and think about the solutions that exist to make them work together.
@@ -40,4 +53,5 @@ Of course, with Javascript we can go far beyond just telling the browser what DO
 # Server Side
 
 Webscript can be used on the server to generate HTML to feed search engines or for other reasons.
+
 
