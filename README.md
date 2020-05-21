@@ -35,7 +35,7 @@ But Javascript is a dynamic and expressive language. Is it possible to leverage 
 
 Of course, with Javascript we can go far beyond just telling the browser what DOM elements to initially create. With Javascript we change DOM elements over time, we can make new DOM elements when the time is right, we can hide them, we can get rid of them and we can compose them in many ways. If our basic building block for creating DOM elements is Webscript, not HTML, we can just work with it, because it is Javasript.
 
-*Why Webscript? Because Javascript works best with Javascript and Webscript is Javascript. *
+*Why Webscript? Because Javascript works best with Javascript and Webscript is Javascript.*
 
 
 
