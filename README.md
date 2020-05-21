@@ -27,10 +27,10 @@ webscript.js is an ES6 module. It has zero dependencies.
 npm install webscript
 ```
 
-Or use a CDN:
+Or use a CDN in an ES6 module:
 
 ```
-<script type="module" src="https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js"></script>
+import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
 # Why?
 
