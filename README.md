@@ -33,7 +33,7 @@ It is a common mistake to think that webpages are HTML. They are not. Web pages 
 
 But Javascript is a dynamic and expressive language. Is it possible to leverage Javascript's features to compete with HTML to create a declarative, succinct, clear syntax for telling the browser what DOM elements to create? The answer is, **yes**. And that is Webscript. 
 
-Of course, with Javascript we can go far beyond just telling the browser what DOM elements to initially create. With Javascript we change DOM elements over time, we can make new DOM elements when the time is right, we can hide them, we can get rid of them and we can compose them in many ways. If our basic building block for creating DOM elements is Webscript, not HTML, we can just work with it, because it is Javasript.
+Of course, with Javascript we can go far beyond just telling the browser what DOM elements to initially create. With Javascript we can change DOM elements over time, we can make new DOM elements when the time is right, we can hide them, we can get rid of them and we can compose them in many ways. If our basic building block for creating DOM elements is Webscript, not HTML, we can just work with it, because it is Javascript.
 
 *Why Webscript? Because Javascript works best with Javascript and Webscript is Javascript.*
 
