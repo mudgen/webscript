@@ -205,7 +205,7 @@ const app =
             div`flex flex-1`(
               button`px-1 border border-transparent text-sm font-medium rounded text-gray-200 bg-indigo-500 hover:bg-indigo-800 focus:outline-none focus:border-indigo-400 focus:shadow-outline-indigo active:bg-indigo-500`(
                 { "type": 'button', onclick: showExample },
-                'Insert Example')),
+                'Insert Random Example')),
             div`flex items-center mb-1 text-indigo-900`(
               h2`text-xl font-medium`("Type or paste HTML"),
               span`#htmlChars block ml-2 font-medium`(function htmlCharsText() { return `(${htmlChars.toLocaleString()} chars)` })),
