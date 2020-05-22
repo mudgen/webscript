@@ -4,7 +4,7 @@
  * [Why?](#why)
  * [Server Side](#server-side)
  * [Usage Example](#usage-example)
- 
+
 
 # What is it?
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
@@ -29,7 +29,7 @@ div`card-image`(
 [See more examples.](https://mudgen.github.io/webscript/html2webscript/#bulma-card)
 
 # Installation
-webscript.js is an ES6 module. It has zero dependencies.
+webscript.js is an ES6 module. It has zero dependencies. It is small. It's size is 3.22 KB.
 
 ```bash
 npm install webscript
@@ -74,7 +74,7 @@ In your `index.html` file:
 Below is your `app.js` file. It uses [Tailwind CSS](https://tailwindcss.com/) to make a card. Note that any CSS library can be used with Webscript.
 
 ```javascript
-import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'
+import elementBuilders from 'webscript'
 
 const { body, div, p, span, img } = elementBuilders;
 
@@ -103,5 +103,61 @@ This is a simple example. Any kind of Javascript composition or manipulation cou
 Here is the result of the above code:
 
 ![Example Webscript Result](./example.png)
+
+# Use it in React, Vue and other libraries and frameworks!
+
+Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without any library.
+
+Webscript's `elementBuilders` can be called with a function that is used to create elements.
+
+The createElements function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
+
+## Example in React
+
+Here is an example of Webscript used in React:
+
+```javascript
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import elementBuilders from 'webscript'
+
+const { div, header, p, a, img, code } = elementBuilders(React.createElement);
+
+function App() {
+  return (
+    div`App`(
+      header`App-header`(
+        img`App-logo`.src(logo).alt`logo`,
+        p("Edit ", code("src/App.js"), " and save to reload."),
+        a`App-link`
+          .href`https://reactjs.org`
+          .target`_blank`
+          .rel`noopener noreferrer`(
+            "Learn React"
+          ))))
+}
+```
+
+A nice thing about React Hooks is that they are functions and so can be used directly within Webscript.
+
+However class-based React elements are not functions. They can still be used in Webscript by passing them in an array to `elementBuilders` in order to convert them into functions. In the example below the `StrictMode` component is converted to a function and used. The `App` React Hook we created in our last example is used directly without any conversion.
+
+```Javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import elementBuilders from 'webscript';
+
+const [StrictMode] = elementBuilders(React.createElement, [React.StrictMode]);
+
+ReactDOM.render(
+  StrictMode(
+    App()
+  ),
+  document.getElementById('root')
+);
+```
+
 
 
