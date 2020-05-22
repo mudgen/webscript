@@ -1,3 +1,7 @@
+# Table of Contents
+ * [What is it?](#what-is-it)
+ * [Installation](#installation)
+
 # What is it?
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
 
@@ -88,7 +92,7 @@ const app =
 document.body = app;
 ```
 
-A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are Javascript functions. The `classes` variable reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the spans in the above code.
+A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are Javascript functions. The `classes` variable is a regular Javascript variable. It reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the spans in the above code.
 
 This is a simple example. Any kind of Javascript composition or manipulation could be done because the above is Javascript strings, variables and functions.
 
