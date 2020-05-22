@@ -1,6 +1,10 @@
 # Table of Contents
  * [What is it?](#what-is-it)
  * [Installation](#installation)
+ * [Why?](#why)
+ * [Server Side](#server-side)
+ * [Usage Example](#usage-example)
+ 
 
 # What is it?
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
