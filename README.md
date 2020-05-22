@@ -13,12 +13,16 @@
 # What is it?
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
 
+1. Webscript is an ES6 Module and uses ES6 features.
+2. It has zero dependencies.
+3. It is small. It's size is 3.22KB
+
 ## Example
 
 HTML:
 ```html
 <div class="card-image">
-  <img src="images/sample-1.jpg" />
+  <img src="images/sample-1.jpg" alt="Sample Image" />
   <span class="card-title">Card Title</span>
 </div>
 ```
@@ -26,14 +30,13 @@ HTML:
 Webscript:
 ```javascript
 div`card-image`(
-  img.src`images/sample-1.jpg`,
+  img.src`images/sample-1.jpg`.alt`Sample Image`,
   span`card-title`("Card Title"))
 ```
 
 [See more examples.](https://mudgen.github.io/webscript/html2webscript/#bulma-card)
 
 # Installation
-webscript.js is an ES6 module. It has zero dependencies. It is small. It's size is 3.22 KB.
 
 ```bash
 npm install webscript
@@ -44,11 +47,30 @@ Or use a CDN in an ES6 module:
 ```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
+# Priority for Class and Id Properties
+
+Not all element properties are equal and Webscript recognizes that. Class and Id properties are used more often than other properties in web applications. Template literal values directly after element names are assigned to class and id properties. The following two code snippets are equivelent:
+
+```javascript
+h1`#myid class1 class2`("Hello World!")
+```
+```javascript
+h1.id`myid`.class`class1 class2`("Hello World!")
+```
+If the first value in the template literal starts with a hash then it is assigned to the `id` property. Any other values are assigned to the `class` property.
+
+It is also possible to use periods between values if you prefer that:
+```javascript
+h1`#myid.class1.class2`("Hello World!")
+````
+
+
 # Why? - Short Version
 1. Webscript is much more capable than HTML.
 2. Webscript is a nicer syntax than Hyperscript.  
 3. Webscript is simpler, more flexible and more capable than HTML templating languages like HTM and lit-html.
 4. Webscript works really well with Javasacript because Webscript is Javascript.
+5. No need for a compiler or special tooling.
 
 # Why? - Longer Version
 
@@ -118,7 +140,7 @@ Here is the result of the above code:
 
 Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without any library.
 
-Webscript's `elementBuilders` can be called with a function that is used to create elements.
+Webscript's `elementBuilders` function can be called with a function that is used to create elements.
 
 The createElements function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
 
