@@ -23,13 +23,13 @@ div`card-image`(
 # Installation
 webscript.js is an ES6 module. It has zero dependencies.
 
-```
+```bash
 npm install webscript
 ```
 
 Or use a CDN in an ES6 module:
 
-```
+```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
 # Why?
@@ -63,7 +63,7 @@ In your `index.html` file:
 </body>
 ```
 
-Here's your `app.js` file. It uses tailwindcss to make a card:
+Below is your `app.js` file. It uses [Tailwindcss](https://tailwindcss.com/) to make a card. Note that any CSS library can be used with Webscript.
 
 ```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'
@@ -80,17 +80,21 @@ const app =
         div`font-bold text-xl mb-2`("The Coldest Sunset"),
         p`text-gray-700 text-base`(
           " Lorem ipsum dolor sit amet, consectetur adipisicing ...")),
-      div`px-6 py-4`(
-        span`${classes="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"} mr-2`("#photography"),
+      div`px-6 py-4 text-sm font-semibold text-gray-700`(
+        span`${classes = "inline-block bg-gray-200 rounded-full px-3 py-1"} mr-2`("#photography"),
         span`${classes} mr-2`("#travel"),
         span`${classes}`("#winter"))));
 
 document.body = app;
 ```
 
-A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are all javascript functions. The `classes` variable reduces some duplication by being assigned a string of css classes that are reused by spans. This part `` `${classes} mr-2` `` is regular javascript string interpolation.
+A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are all javascript functions. The `classes` variable reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used here.
+
+This is a simple example. Any kind of Javascript composition or manipulation could be done because the above is Javascript strings, variables and functions.
 
 Here is the result of the above code:
 
 ![Example Webscript Result](./example.png)
+
+You can see it [on the test webpage}(https://mudgen.github.io/webscript/test/).
 
