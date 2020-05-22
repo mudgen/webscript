@@ -1,7 +1,8 @@
 # Table of Contents
  * [What is it?](#what-is-it)
  * [Installation](#installation)
- * [Why?](#why)
+ * [Why? - Short Version](#why---short-version)
+ * [Why? - Long Version](#why---long-version)
  * [Server Side](#server-side)
  * [Usage Example](#usage-example)
  * [Use it in React, Vue and other libraries and frameworks!](#use-it-in-react-vue-and-other-libraries-and-frameworks)
@@ -169,7 +170,7 @@ ReactDOM.render(
 ```
 ## By Itself
 
-When `elementBuilders` is used without calling it with a function a default `createElement` function is used that simply creates regular browser DOM elements.
+When `elementBuilders` is used without calling it with a `createElement` function a default `createElement` function is used internally that simply creates regular browser DOM elements.
 
 ```javascript
 import elementBuilders from 'webscript'
@@ -179,7 +180,7 @@ const { div, p } = elementBuilders;
 const myDiv = div(p("hello world"))
 ```
 
-In the above example `myDiv` contains a regular DOM `div` element with a regular DOM `p` element inside it.
+In the above example `myDiv` is assigned a regular DOM `div` element with a regular DOM `p` element inside it.
 
 
 
