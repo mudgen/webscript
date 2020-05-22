@@ -4,6 +4,9 @@
  * [Why?](#why)
  * [Server Side](#server-side)
  * [Usage Example](#usage-example)
+ * [Use it in React, Vue and other libraries and frameworks!](#use-it-in-react-vue-and-other-libraries-and-frameworks)
+    * [React Example](#react-example)
+    * [By Itself](#by-itself)
 
 
 # What is it?
@@ -40,7 +43,13 @@ Or use a CDN in an ES6 module:
 ```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
-# Why?
+# Why? - Short Version
+1. Webscript is much more capable than HTML.
+2. Webscript is a nicer syntax than Hyperscript.  
+3. Webscript is simpler, more flexible and more capable than HTML templating languages like HTM and lit-html.
+4. Webscript works really well with Javasacript because Webscript is Javascript.
+
+# Why? - Longer Version
 
 You might not believe it or think it at first but HTML and Javascript don't go together well. They started out together and have been together so long that it might seem normal they are used together. Take a step back and think about the solutions that exist to make them work together.
 
@@ -48,11 +57,11 @@ You might not believe it or think it at first but HTML and Javascript don't go t
 
 If Javascript and HTML went together, they would just be used together. But they are not just used together. They are forced together this way and that way. They are oil and water. They don't go together.
 
-If you think about it, it makes sense that they don't go together. They have difference purposes. HTML is a markup language with a very specific purpose: create static documents that link to each other. Javascript is a general purpose programming language for creating custom software. If Javascript and HTML met at a bar, they wouldn't talk to each other because they have too little in common. Except they happen to be married to the same woman, the browser, so they deal with each other. It is time to stop messing around and decide on *one* of them and the choice is obvious.
+If you think about it, it makes sense that they don't go together. They are completely different languages with different purposes. HTML is a markup language with a very specific purpose: create static documents that link to each other. Javascript is a general purpose programming language for creating software. If Javascript and HTML met at a bar, they wouldn't talk to each other because they have too little in common. Except they happen to be married to the same woman, the browser, so they deal with each other. It is time to stop messing around and decide on *one* of them and the choice is obvious.
 
 It is a common mistake to think that web pages are HTML. They are not. Web pages are the browser DOM, not HTML. It is possible to create web applications without any HTML by building the DOM up with Javascript. The reason this hasn't happened much is because the native way to do this in Javascript, using the function `document.createElement`, is terribly inelegant compared to HTML. It is true that HTML is a nice, succinct language for telling the browser what DOM elements to make. As a markup language, that's what it has to offer.
 
-But Javascript is a dynamic and expressive language. Is it possible to leverage Javascript's features to compete with HTML to create a declarative, succinct, clear syntax for telling the browser what DOM elements to create? The answer is, **yes**. And that is Webscript. 
+But Javascript is a dynamic and expressive language. This question should be asked: Is it possible to find within Javascript's features a declarative, succinct, clear syntax for telling the browser what DOM elements to create? The answer is, **yes**. And that is Webscript. 
 
 Of course, with Javascript we can go far beyond just telling the browser what DOM elements to initially create. With Javascript we can change DOM elements over time, we can make new DOM elements when the time is right, we can hide them, we can get rid of them and we can compose them in many ways. If our basic tool for creating DOM elements is Webscript, not HTML, we can just work with it, because it is Javascript.
 
@@ -98,7 +107,7 @@ document.body = app;
 
 A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are Javascript functions. The `classes` variable is a regular Javascript variable. It reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the spans in the above code.
 
-This is a simple example. Any kind of Javascript composition or manipulation could be done because the above is Javascript strings, variables and functions.
+This is a simple example. Any kind of Javascript composition or manipulation can be done because we have the full Javascript language at our disposal. The above is Javascript strings, variables and functions.
 
 Here is the result of the above code:
 
@@ -112,7 +121,7 @@ Webscript's `elementBuilders` can be called with a function that is used to crea
 
 The createElements function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
 
-## Example in React
+## React Example
 
 Here is an example of Webscript used in React:
 
@@ -158,6 +167,22 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+## By Itself
+
+When `elementBuilders` is used without calling it with a function a default `createElement` function is used that simply creates regular browser DOM elements.
+
+```javascript
+import elementBuilders from 'webscript'
+
+const { div, p } = elementBuilders;
+
+const myDiv = div(p("hello world"))
+```
+
+In the above example `myDiv` contains a regular DOM `div` element with a regular DOM `p` element inside it.
+
+
+
 
 
 
