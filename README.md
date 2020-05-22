@@ -138,17 +138,17 @@ Here is the result of the above code:
 
 # Use it in React, Vue and other libraries and frameworks!
 
-Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without any library.
+Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without a library.
 
-Webscript's `elementBuilders` function can be called with a function that is used to create the elements. Let's call this function `createElement` because it is often called that.
+Webscript interoperates with libraries and frameworks by taking a function from them that is used to create the elements. Webscript's `elementBuilders` function is called with the function from the library/framework. Let's call this function from the library or framework `createElement` because it is often called that.
 
-The `createElement` function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
+The `createElement` function must have the following parameters: `components, properties, ...children`. These are exactly the parameters used by React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) with these parameters.
 
-Webscript should work with any library or framework that provides a `createElement` function that takes the above arguments.
+Webscript should work with any library or framework that provides a `createElement` function that has the above parameters.
+
+Here is an example of using Webscript in React. 
 
 ## React Example
-
-Here is an example of Webscript used in React:
 
 ```javascript
 import React from 'react';
