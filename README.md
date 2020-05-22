@@ -63,7 +63,7 @@ In your `index.html` file:
 </body>
 ```
 
-Below is your `app.js` file. It uses [Tailwindcss](https://tailwindcss.com/) to make a card. Note that any CSS library can be used with Webscript.
+Below is your `app.js` file. It uses [Tailwind CSS](https://tailwindcss.com/) to make a card. Note that any CSS library can be used with Webscript.
 
 ```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'
@@ -88,7 +88,7 @@ const app =
 document.body = app;
 ```
 
-A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are all javascript functions. The `classes` variable reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used here.
+A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are Javascript functions. The `classes` variable reduces some duplication by being assigned a string of class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the spans in the above code.
 
 This is a simple example. Any kind of Javascript composition or manipulation could be done because the above is Javascript strings, variables and functions.
 
@@ -96,5 +96,4 @@ Here is the result of the above code:
 
 ![Example Webscript Result](./example.png)
 
-You can see it [on the test webpage](https://mudgen.github.io/webscript/test/).
 
