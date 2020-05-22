@@ -96,5 +96,5 @@ Here is the result of the above code:
 
 ![Example Webscript Result](./example.png)
 
-You can see it [on the test webpage}(https://mudgen.github.io/webscript/test/).
+You can see it [on the test webpage](https://mudgen.github.io/webscript/test/).
 
