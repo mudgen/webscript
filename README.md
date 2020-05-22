@@ -140,9 +140,11 @@ Here is the result of the above code:
 
 Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without any library.
 
-Webscript's `elementBuilders` function can be called with a function that is used to create elements.
+Webscript's `elementBuilders` function can be called with a function that is used to create the elements. Let's call this function `createElement` because it is often called that.
 
-The createElements function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
+The `createElement` function must take the following arguments: `components, properties, ...children`. These are exactly the arguments that React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function take. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments).
+
+Webscript should work with any library or framework that provides a `createElement` function that takes the above arguments.
 
 ## React Example
 
