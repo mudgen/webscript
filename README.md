@@ -54,9 +54,43 @@ Of course, with Javascript we can go far beyond just telling the browser what DO
 
 Webscript can be used on the server to generate HTML to feed search engines or for other reasons.
 
-# Usage 
+# Usage Example
 
+In your `index.html` file:
+```html
+<body>
+  <script type="module" src="app.js"></script>
+</body>
 ```
-import elementBuilders from '
 
+Here's your `app.js` file. It uses tailwindcss to make a card:
+
+```javascript
+import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'
+
+const { body, div, p, span, img } = elementBuilders;
+
+let classes;
+
+const app =
+  body`flex items-center justify-center h-screen`(
+    div`max-w-sm rounded overflow-hidden shadow-lg`(
+      img`w-full`.src`img/card-top.jpg`.alt`Sunset in the mountains`,
+      div`px-6 py-4`(
+        div`font-bold text-xl mb-2`("The Coldest Sunset"),
+        p`text-gray-700 text-base`(
+          " Lorem ipsum dolor sit amet, consectetur adipisicing ...")),
+      div`px-6 py-4`(
+        span`${classes="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"} mr-2`("#photography"),
+        span`${classes} mr-2`("#travel"),
+        span`${classes}`("#winter"))));
+
+document.body = app;
+```
+
+A couple things to notice. There is no HTML templating here. `body`, `div`, `img`, `p`, `span` are all javascript functions. The `classes` variable reduces some duplication by being assigned a string of css classes that are reused by spans. This part `` `${classes} mr-2` `` is regular javascript string interpolation.
+
+Here is the result of the above code:
+
+![Example Webscript Result](./example.png)
 
