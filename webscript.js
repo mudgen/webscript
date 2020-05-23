@@ -1,5 +1,22 @@
 // @ts-check
 
+function addChild(element, child) {
+  if (typeof child === "number"
+    || typeof child === "boolean"
+    || child instanceof Date
+    || child instanceof RegExp) {
+    element.append(String(child))
+  }
+  else if (Array.isArray(child)) {
+    for (const childChild of child) {
+      addChild(element, childChild);
+    }
+  }
+  else {
+    element.append(child);
+  }
+}
+
 function createElement(tagName, props, ...children) {
   tagName = tagName.toLowerCase();
   const element = ["svg", "path", "title"].includes(tagName) ?
@@ -18,15 +35,7 @@ function createElement(tagName, props, ...children) {
     }
   }
   for (const child of children) {
-    if (typeof child === "number"
-      || typeof child === "boolean"
-      || child instanceof Date
-      || child instanceof RegExp) {
-      element.append(String(child))
-    }
-    else {
-      element.append(child);
-    }
+    addChild(element, child);
   }
   return element;
 }
