@@ -63,12 +63,12 @@ function elementBuilderBuilder(elementConstructor, element) {
       first = joinStringsAndArgs(args);
     }
     let { props, prop } = this.__element_info__;
-    props = { [prop]: first, ...props }
+    props = { ...props, [prop]: first }
     return elementBuilder({ props, prop: null });
   }
   function getPropsValues(props) {
     let { props: existingProps } = this.__element_info__;
-    props = { ...props, ...existingProps }
+    props = { ...existingProps, ...props }
     return elementBuilder({ props, prop: null });
   }
   function elementBuilder(propsInfo) {
@@ -84,11 +84,15 @@ function elementBuilderBuilder(elementConstructor, element) {
               newProps["id"] = value.shift().slice(1);
             }
           }
-          if (value.length > 0) {
-            newProps["className"] = value.join(" ");
-          }
           let { props } = builder.__element_info__;
-          props = { ...newProps, ...props }
+          if (value.length > 0) {
+            let existingClassNames = props.className || "";
+            if (typeof existingClassNames === "string" && existingClassNames.length > 0) {
+              existingClassNames += " ";
+            }
+            newProps["className"] = existingClassNames + value.join(" ");
+          }
+          props = { ...props, ...newProps }
           return elementBuilder({ props, prop: null });
         }
         else {
