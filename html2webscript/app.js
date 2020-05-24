@@ -21,7 +21,8 @@ const { svg, path, title, body, div, p, label, h1, h2, h3, span, button, input }
 // @ts-ignore
 const CodeMirror = window.CodeMirror;
 let maxLineLength = 125;
-let classAndId = false;
+let classAndId = true;
+let showParens = false;
 let endParensNewline = false;
 let minifyCode = false;
 let htmlChars = 0;
@@ -119,12 +120,15 @@ function hideSettings() {
 
 function saveSettings() {
   const maxLineLengthInput = document.getElementById("max-line-length");
-  const classAndIdInput = document.getElementById("class-and-id");
+  //const classAndIdInput = document.getElementById("class-and-id");
+  const contentParensInput = document.getElementById("content-parens");
   const endParensNewlineInput = document.getElementById("end-parens")
+  // @ts-ignore
+  showParens = contentParensInput.checked;
   // @ts-ignore
   endParensNewline = endParensNewlineInput.checked;
   // @ts-ignore
-  classAndId = classAndIdInput.checked;
+  //classAndId = classAndIdInput.checked;
   // @ts-ignore
   maxLineLength = maxLineLengthInput.value;
   hideSettings();
@@ -144,7 +148,7 @@ function saveSettings() {
 
 
 const settings =
-  div`#settings fixed flex inset-0 items-center justify-center invisible z-10`.onclick(hideSettings)(
+  div.id`settings`.class`fixed flex inset-0 items-center justify-center invisible z-10`.onclick(hideSettings)(
     /* 
       Background overlay, show/hide based on modal state.
   
@@ -155,8 +159,8 @@ const settings =
         From: "opacity-100"
         To: "opacity-0"
     */
-    div`fixed inset-0 transition-opacity opacity-0`(
-      div`absolute inset-0 bg-gray-500 opacity-75`),
+    div.class`fixed inset-0 transition-opacity opacity-0`(
+      div.class`absolute inset-0 bg-gray-500 opacity-75`),
     /* 
       Modal panel, show/hide based on modal state.
   
@@ -167,67 +171,71 @@ const settings =
         From: "opacity-100 translate-y-0 sm:scale-100"
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     */
-    div`bg-white rounded-lg px-4 pt-3 pb-4 overflow-hidden shadow-xl transform transition-all max-w-sm w-full p-6 opacity-0 scale-50`
+    div.class`bg-white rounded-lg px-4 pt-3 pb-4 overflow-hidden shadow-xl transform transition-all max-w-sm w-full p-6 opacity-0 scale-50`
       .role`dialog`.aria`true`.aria`modal-headline`.onclick((e) => e.stopPropagation())(
         div(
-          h3`#modal-headline text-lg leading-6 font-medium text-gray-900 mb-2`("Settings"),
-          div`grid grid-cols-2 items-center border-t py-3`(
-            label`block`("Indent Line Length:"),
-            input`#max-line-length form-input`.type`number`.value(maxLineLength)
+          h3.id`modal-headline`.class`text-lg leading-6 font-medium text-gray-900 mb-2``Settings`,
+          div.class`grid grid-cols-2 items-center border-t pt-3`(
+            label.class`block``Indent Line Length:`,
+            input.id`max-line-length`.class`form-input`.type`number`.value(maxLineLength)
           ),
-          div`grid grid-cols-2 items-center pt-3`(
-            label`block`("Show class and id:"),
-            input`#class-and-id form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(classAndId)
+          div.class`grid grid-cols-2 items-center pt-3`(
+            label.class`block`("Show Content Parens:"),
+            input.id`content-parens`.class`form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(showParens)
           ),
-          div`grid grid-cols-2 items-center pt-3`(
-            label`block`("End Parens on Newline:"),
-            input`#end-parens form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(endParensNewline)
+          // div.class`grid grid-cols-2 items-center pt-3`(
+          //   label.class`block`("Show class and id:"),
+          //   input.id`class-and-id`.class`form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(classAndId)
+          // ),
+          div.class`grid grid-cols-2 items-center pt-3`(
+            label.class`block`("End Parens on Newline:"),
+            input.id`end-parens`.class`form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(endParensNewline)
           ),
-          div`grid grid-cols-2 items-center pt-3`(
-            label`block`("Minify:"),
-            input`#minify form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(minifyCode)
+          div.class`grid grid-cols-2 items-center pt-3`(
+            label.class`block`("Minify:"),
+            input.id`minify`.class`form-checkbox h-5 w-5 text-indigo-600`.type`checkbox`.checked(minifyCode)
           )
 
         ),
-        div`mt-5 sm:mt-6`(
-          span`flex w-full rounded-md shadow-sm`(
-            button`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo sm:text-base sm:leading-5`
+        div.class`mt-5 sm:mt-6`(
+          span.class`flex w-full rounded-md shadow-sm`(
+            button.class`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo sm:text-base sm:leading-5`
               .type`button`.onclick(saveSettings)("Save Settings")))));
 
 const app =
-  body`bg-indigo-100`(
-    div`flex flex-col h-screen`(
-      h1`#header p-5 text-2xl text-indigo-900 font-medium cursor-pointer`.onclick(clearText)
+  body.class`bg-indigo-100`(
+    div.class`flex flex-col h-screen`(
+      h1.id`header`.class`p-5 text-2xl text-indigo-900 font-medium cursor-pointer`.onclick(clearText)
         ("Convert HTML to Webscript"),
-      div`flex-1 bg-indigo-200 text-center px-2 pb-2 m-2 grid gap-2 grid-cols-2 text-white rounded-md`(
-        div`flex flex-col`(
-          div`flex items-center`(
-            div`flex flex-1`(
-              button`px-1 border border-transparent text-sm font-medium rounded text-gray-200 bg-indigo-500 hover:bg-indigo-800 focus:outline-none focus:border-indigo-400 focus:shadow-outline-indigo active:bg-indigo-500`(
+      div.class`flex-1 bg-indigo-200 text-center px-2 pb-2 m-2 grid gap-2 grid-cols-2 text-white rounded-md`(
+        div.class`flex flex-col`(
+          div.class`flex items-center`(
+            div.class`flex flex-1`(
+              button.class`px-1 border border-transparent text-sm font-medium rounded text-gray-200 bg-indigo-500 hover:bg-indigo-800 focus:outline-none focus:border-indigo-400 focus:shadow-outline-indigo active:bg-indigo-500`(
                 { "type": 'button', onclick: showExample },
                 'Insert Random Example')),
-            div`flex items-center mb-1 text-indigo-900`(
-              h2`text-xl font-medium`("Type or paste HTML"),
-              span`#htmlChars block ml-2 font-medium`(function htmlCharsText() { return `(${htmlChars.toLocaleString()} chars)` })),
-            div`flex-1`),
+            div.class`flex items-center mb-1 text-indigo-900`(
+              h2.class`text-xl font-medium`("Type or paste HTML"),
+              span.id`htmlChars`.class`block ml-2 font-medium`(function htmlCharsText() { return `(${htmlChars.toLocaleString()} chars)` })),
+            div.class`flex-1`),
           div.id`htmlEditor`.class`h-full rounded-md shadow-inner text-left`()),
-        div`flex flex-col`(
-          div`flex`(
-            div`flex-1`,
-            div`flex`(
-              div`flex items-center mb-1 text-indigo-900`(
-                h2`text-xl font-medium`("Copy Webscript"),
-                span`#javascriptChars block ml-2 font-medium`(function javascriptCharsText() { return `(${javascriptChars.toLocaleString()} chars)` })),
+        div.class`flex flex-col`(
+          div.class`flex`(
+            div.class`flex-1`,
+            div.class`flex`(
+              div.class`flex items-center mb-1 text-indigo-900`(
+                h2.class`text-xl font-medium`("Copy Webscript"),
+                span.id`javascriptChars`.class`block ml-2 font-medium`(function javascriptCharsText() { return `(${javascriptChars.toLocaleString()} chars)` })),
             ),
-            div`flex flex-1 justify-end items-center`(
-              button`flex mr-3 text-indigo-500 hover:text-indigo-800`.onclick(copyScript)(
-                span`font-medium mr-1`("Copy"),
-                svg`w-6 h-6 fill-current`.viewBox`0 0 20 20`(
+            div.class`flex flex-1 justify-end items-center`(
+              button.class`flex mr-3 text-indigo-500 hover:text-indigo-800`.onclick(copyScript)(
+                span.class`font-medium mr-1`("Copy"),
+                svg.class`w-6 h-6 fill-current`.viewBox`0 0 20 20`(
                   title("Copy"),
                   path.d`M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z`)),
-              button`flex text-indigo-500 hover:text-indigo-800`.onclick(showSettings)(
-                span`font-medium mr-1`("Settings"),
-                svg`w-6 h-6 fill-current`.viewBox`0 0 20 20`(
+              button.class`flex text-indigo-500 hover:text-indigo-800`.onclick(showSettings)(
+                span.class`font-medium mr-1`("Settings"),
+                svg.class`w-6 h-6 fill-current`.viewBox`0 0 20 20`(
                   path.d`M3.94 6.5L2.22 3.64l1.42-1.42L6.5 3.94c.52-.3 1.1-.54 1.7-.7L9 0h2l.8 3.24c.6.16 1.18.4 1.7.7l2.86-1.72 1.42 1.42-1.72 2.86c.3.52.54 1.1.7 1.7L20 9v2l-3.24.8c-.16.6-.4 1.18-.7 1.7l1.72 2.86-1.42 1.42-2.86-1.72c-.52.3-1.1.54-1.7.7L11 20H9l-.8-3.24c-.6-.16-1.18-.4-1.7-.7l-2.86 1.72-1.42-1.42 1.72-2.86c-.3-.52-.54-1.1-.7-1.7L0 11V9l3.24-.8c.16-.6.4-1.18.7-1.7zM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z`)
               ))),
           div.id`jsEditor`.class`h-full rounded-md shadow-inner text-left`()),
@@ -240,7 +248,7 @@ const app =
 document.body = app;
 
 const codeMirror = CodeMirror(document.getElementById("htmlEditor"), { mode: "xml", htmlMode: true, placeholder: "Type or paste HTML..." });
-const displayCodeMirror = CodeMirror(document.getElementById("jsEditor"), { mode: "javascript", addModeClass: true });
+const displayCodeMirror = CodeMirror(document.getElementById("jsEditor"), { mode: "javascript", addModeClass: true, flattenSpans: false });
 
 let output = []
 
@@ -260,12 +268,16 @@ function out(o, indent) {
     output.push(attr);
     lineSize += attr.length
   }
-  if (o.children.length > 0) {
-    output.push("(");
-    lineSize += 1;
-  }
+  // if (o.children.length > 0) {
+  //   if (showParens || o.children.length > 1) {
+  //     output.push("(");
+  //   }
+  //   lineSize += 1;
+  // }
 
   if (o.hasMultipleChildren) {
+    output.push("(");
+    lineSize += 1;
     for (const child of o.children) {
       if (needsComma) {
         output.push(",");
@@ -294,11 +306,22 @@ function out(o, indent) {
   else if (o.children.length === 1) {
     let child = o.children[0];
     if (typeof child === "string") {
-      if (o.attrs.length > 0 && lineSize + child.length + 4 > maxLineLength) {
+      let punctuationSize = 2;
+      if (showParens) {
+        punctuationSize = 4;
+        output.push("(");
+        lineSize += 1;
+      }
+      if (o.attrs.length > 0 && lineSize + child.length + punctuationSize > maxLineLength) {
         output.push(`\n${" ".repeat(indent)}`);
       }
-      output.push(`"${child}"`);
-      output.push(")");
+      if (showParens) {
+        output.push(`"${child}"`);
+        output.push(")");
+      }
+      else {
+        output.push(`\`${child}\``)
+      }
     }
     else if (child.nodeType) {
       output.push(`\n${" ".repeat(indent)}`);
@@ -307,6 +330,8 @@ function out(o, indent) {
       output.push("*/")
     }
     else {
+      output.push("(");
+      lineSize += 1;
       if (lineSize + child.size + 2 > maxLineLength) {
         output.push(`\n${" ".repeat(indent)}`);
         out(child, indent)
@@ -335,7 +360,6 @@ function camelCase(hyphenText) {
     })
     .join("")
 }
-
 
 function traverse(element) {
   const o = Object.create(null);

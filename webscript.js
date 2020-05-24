@@ -2,6 +2,7 @@
 
 function addChild(element, child) {
   if (typeof child === "number"
+    || typeof child === "bigint"
     || typeof child === "boolean"
     || child instanceof Date
     || child instanceof RegExp) {
@@ -12,7 +13,7 @@ function addChild(element, child) {
       addChild(element, childChild);
     }
   }
-  else {
+  else if (typeof child !== "undefined" && child !== null) {
     element.append(child);
   }
 }
@@ -41,7 +42,7 @@ function createElement(tagName, props, ...children) {
 }
 
 
-function joinStringsAndArgs(args) {
+function templateValue(args) {
   const [strings, ...templateArgs] = args;
   const result = [];
   for (const [index, s] of strings.entries()) {
@@ -51,8 +52,6 @@ function joinStringsAndArgs(args) {
   return result.join("");
 }
 
-
-
 function elementBuilderBuilder(elementConstructor, element) {
   function getPropertyValue(...args) {
     let [first] = args;
@@ -60,7 +59,7 @@ function elementBuilderBuilder(elementConstructor, element) {
       first = '';
     }
     else if (Array.isArray(first) && Object.isFrozen(first)) {
-      first = joinStringsAndArgs(args);
+      first = templateValue(args);
     }
     let { props, prop } = this.__element_info__;
     props = { ...props, [prop]: first }
@@ -74,26 +73,10 @@ function elementBuilderBuilder(elementConstructor, element) {
   function elementBuilder(propsInfo) {
     let builder = new Proxy(() => { }, {
       apply(target, thisArg, args) {
+        let { props } = builder.__element_info__;
         let [first] = args;
         if (Array.isArray(first) && Object.isFrozen(first)) {
-          let first = joinStringsAndArgs(args).trim();
-          let value = first.split(/[\s.]+/);
-          let newProps = {};
-          if (value.length > 0) {
-            if (value[0].startsWith("#")) {
-              newProps["id"] = value.shift().slice(1);
-            }
-          }
-          let { props } = builder.__element_info__;
-          if (value.length > 0) {
-            let existingClassNames = props.className || "";
-            if (typeof existingClassNames === "string" && existingClassNames.length > 0) {
-              existingClassNames += " ";
-            }
-            newProps["className"] = existingClassNames + value.join(" ");
-          }
-          props = { ...props, ...newProps }
-          return elementBuilder({ props, prop: null });
+          return elementConstructor(element, props, templateValue(args));
         }
         else {
           for (let i = 0; i < args.length; i++) {
@@ -102,7 +85,6 @@ function elementBuilderBuilder(elementConstructor, element) {
               args[i] = arg();
             }
           }
-          let { props } = builder.__element_info__;
           return elementConstructor(element, props, ...args);
         }
       },

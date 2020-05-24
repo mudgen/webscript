@@ -138,9 +138,12 @@
 */
 
 
+
 .cm-s-default .cm-variable-2 {color: #05a;}
 .cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}
 .cm-s-default .cm-comment {color: rgb(150,105,50) /*#a50;*/}
+
+
 
 /* rgb(102, 115, 241) */
 .cm-s-default .cm-string-2 {color: rgb(170,64,64) /*rgb(80, 90, 220)*/ /*#a22*/ /* #047481*/ /*#a11*/ /*#f50*/;}
@@ -163,13 +166,21 @@
 .cm-s-default .cm-property { color: rgb(0,0,194);}
 */
 
+.cm-variable {color: #170; }
+.cm-s-default .cm-m-javascript.cm-string {color: rgb(20, 30, 80);}
+.cm-s-default .cm-variable + .cm-string-2 {color: rgb(20, 30, 80);}
+.cm-s-default .cm-string-2 + .cm-string-2 {color: rgb(20, 30, 80);}
+.cm-s-default .cm-property + .cm-string-2 {color: rgb(170,64,64);}
+.cm-s-default .cm-property { color: #00c;}
 
+
+/*
 .cm-variable {color: rgb(0,0,194); }
 .cm-s-default .cm-m-javascript.cm-string {color: rgb(20, 30, 80);}
 .cm-s-default .cm-string-2 + .cm-string {color: rgb(20, 30, 80);}
 .cm-s-default .cm-property + .cm-string-2 {color: rgb(75, 85, 170);}
 .cm-s-default .cm-property { color: #170;}
-
+*/
 
 /*
 <pre class=" CodeMirror-line " role="presentation">

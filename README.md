@@ -29,9 +29,9 @@ HTML:
 
 Webscript:
 ```javascript
-div`card-image`(
+div.class`card-image`(
   img.src`images/sample-1.jpg`.alt`Sample Image`,
-  span`card-title`("Card Title"))
+  span.class`card-title`("Card Title"))
 ```
 
 [See more examples.](https://mudgen.github.io/webscript/html2webscript/#bulma-card)
@@ -47,23 +47,6 @@ Or use a CDN in an ES6 module:
 ```javascript
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
-# Priority for Class and Id Properties
-
-Not all element properties are equal and Webscript recognizes that. Class and Id properties are used more often than other properties in web applications. Template literal values directly after element names are assigned to class and id properties. The following two code snippets are equivelent:
-
-```javascript
-h1`#myid class1 class2`("Hello World!")
-```
-```javascript
-h1.id`myid`.class`class1 class2`("Hello World!")
-```
-If the first value in the template literal starts with a hash then it is assigned to the `id` property. Any other values are assigned to the `class` property.
-
-It is also possible to use periods between values if you prefer that:
-```javascript
-h1`#myid.class1.class2`("Hello World!")
-````
-
 
 # Why? - Short Version
 1. Webscript is much more capable than HTML.
@@ -113,17 +96,17 @@ const { body, div, p, span, img } = elementBuilders;
 let classes;
 
 const app =
-  body`flex items-center justify-center h-screen`(
-    div`max-w-sm rounded overflow-hidden shadow-lg`(
-      img`w-full`.src`img/card-top.jpg`.alt`Sunset in the mountains`,
-      div`px-6 py-4`(
-        div`font-bold text-xl mb-2`("The Coldest Sunset"),
-        p`text-gray-700 text-base`(
+  body.class`flex items-center justify-center h-screen`(
+    div.class`max-w-sm rounded overflow-hidden shadow-lg`(
+      img.class`w-full`.src`img/card-top.jpg`.alt`Sunset in the mountains`,
+      div.class`px-6 py-4`(
+        div.class`font-bold text-xl mb-2`("The Coldest Sunset"),
+        p.class`text-gray-700 text-base`(
           " Lorem ipsum dolor sit amet, consectetur adipisicing ...")),
-      div`px-6 py-4 text-sm font-semibold text-gray-700`(
-        span`${classes = "inline-block bg-gray-200 rounded-full px-3 py-1"} mr-2`("#photography"),
-        span`${classes} mr-2`("#travel"),
-        span`${classes}`("#winter"))));
+      div.class`px-6 py-4 text-sm font-semibold text-gray-700`(
+        span.class`${classes = "inline-block bg-gray-200 rounded-full px-3 py-1"} mr-2`("#photography"),
+        span.class`${classes} mr-2`("#travel"),
+        span.class`${classes}`("#winter"))));
 
 document.body = app;
 ```
@@ -160,16 +143,16 @@ const { div, header, p, a, img, code } = elementBuilders(React.createElement);
 
 function App() {
   return (
-    div`App`(
-      header`App-header`(
-        img`App-logo`.src(logo).alt`logo`,
+    div.class`App`(
+      header.class`App-header`(
+        img.class`App-logo`.src(logo).alt`logo`,
         p("Edit ", code("src/App.js"), " and save to reload."),
-        a`App-link`
-          .href`https://reactjs.org`
-          .target`_blank`
-          .rel`noopener noreferrer`(
-            "Learn React"
-          ))))
+        a.class`App-link`
+         .href`https://reactjs.org`
+         .target`_blank`
+         .rel`noopener noreferrer`(
+           "Learn React"
+         ))))
 }
 ```
 
