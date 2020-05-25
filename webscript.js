@@ -160,7 +160,7 @@ const elementBuilders = elementBuildersBuilder();
 if (document.currentScript === null
   || typeof document.currentScript === "undefined") {
   // @ts-ignore
-  window.Webscript = { elementBuilders: elementBuilders }
+  window.Webscript = { elementBuilders }
 }
 export default elementBuilders;
 
