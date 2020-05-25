@@ -42,14 +42,19 @@ function createElement(tagName, props, ...children) {
 }
 
 
-function templateValue(args) {
+function templateValues(args) {
   const [strings, ...templateArgs] = args;
   const result = [];
   for (const [index, s] of strings.entries()) {
-    result.push(s);
-    result.push(templateArgs[index])
+    if (s !== "") {
+      result.push(s);
+    }
+    let arg = templateArgs[index];
+    if (typeof arg !== "undefined") {
+      result.push(arg)
+    }
   }
-  return result.join("");
+  return result
 }
 
 function elementBuilderBuilder(elementConstructor, element) {
@@ -59,7 +64,7 @@ function elementBuilderBuilder(elementConstructor, element) {
       first = '';
     }
     else if (Array.isArray(first) && Object.isFrozen(first)) {
-      first = templateValue(args);
+      first = templateValues(args).join("");
     }
     let { props, prop } = this.__element_info__;
     props = { ...props, [prop]: first }
@@ -72,21 +77,26 @@ function elementBuilderBuilder(elementConstructor, element) {
   }
   function elementBuilder(propsInfo) {
     let builder = new Proxy(() => { }, {
-      apply(target, thisArg, args) {
+      apply(target, thisArg, children) {
         let { props } = builder.__element_info__;
-        let [first] = args;
+        if (typeof props.exec === "function") {
+          let exec = props.exec;
+          delete props.exec;
+          let result = exec(builder, children);
+          props.exec = exec;
+          return result;
+        }
+        let [first] = children;
         if (Array.isArray(first) && Object.isFrozen(first)) {
-          return elementConstructor(element, props, templateValue(args));
+          children = templateValues(children);
         }
-        else {
-          for (let i = 0; i < args.length; i++) {
-            let arg = args[i];
-            if (typeof arg === "function" && arg.__element_info__) {
-              args[i] = arg();
-            }
+        for (let i = 0; i < children.length; i++) {
+          let arg = children[i];
+          if (typeof arg === "function" && arg.__element_info__) {
+            children[i] = arg();
           }
-          return elementConstructor(element, props, ...args);
         }
+        return elementConstructor(element, props, ...children);
       },
       get(target, prop) {
         const result = target[prop];
@@ -146,7 +156,11 @@ function elementBuildersBuilder(elementConstructor = createElement, elements = [
     });
   }
 }
-
 const elementBuilders = elementBuildersBuilder();
+if (document.currentScript === null
+  || typeof document.currentScript === "undefined") {
+  // @ts-ignore
+  window.Webscript = { elementBuilders: elementBuilders }
+}
 export default elementBuilders;
 

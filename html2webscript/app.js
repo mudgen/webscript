@@ -247,7 +247,7 @@ const app =
 //document.getElementById("root").replaceWith(app);
 document.body = app;
 
-const codeMirror = CodeMirror(document.getElementById("htmlEditor"), { mode: "xml", htmlMode: true, placeholder: "Type or paste HTML..." });
+const codeMirror = CodeMirror(document.getElementById("htmlEditor"), { mode: {name: "xml", htmlMode: true}, placeholder: "Type or paste HTML..." });
 const displayCodeMirror = CodeMirror(document.getElementById("jsEditor"), { mode: "javascript", addModeClass: true, flattenSpans: false });
 
 let output = []

@@ -1,5 +1,6 @@
+const CodeMirror = window.CodeMirror;
 import elementBuilders from '../webscript.js';
-const { body, div, p, nav, h1, ol, li, pre, code } = elementBuilders;
+let { body, div, p, nav, h1, ol, li, pre, code, a } = elementBuilders;
 
 function contentValue(values) {
   const [first] = values;
@@ -14,32 +15,54 @@ function contentValue(values) {
   return values.join("");
 }
 
-function header(...content) {
-  content = contentValue(content);
-  let id = content.trim().replace(/\s+/g, "-");
-  return h1.id(id).class`text-3xl border-b-2 font-medium py-3 mb-4 border-gray-200`(content)
-}
 
-function smallHeader(...content) {
-  content = contentValue(content);
+const header = h1.exec((builder, children) => {
+  let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-");
-  return h1.id(id).class`text-2xl border-b-2 font-medium py-3 mb-4 border-gray-200`(content)
+  return builder.id(id).class`text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
+})
+
+const smallHeader = h1.exec((builder, children) => {
+  let content = contentValue(children);
+  let id = content.trim().replace(/\s+/g, "-");
+  return builder.id(id).class`text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
+})
+
+
+function editorContainer() {
+  return div.class`rounded-md bg-cool-gray-100`();
 }
 
 function htmlCode(...content) {
   content = contentValue(content);
-  return pre(code.class`language-html`(content))
+  let editor = editorContainer()
+  let codeEditor = CodeMirror(editor, { mode: { name: "xml", htmlMode: true }, value: content });
+  setTimeout(() => codeEditor.refresh())
+  return editor
 }
 
 function javascriptCode(...content) {
   content = contentValue(content);
-  return pre(code.class`language-javascript`(content))
+  let editor = editorContainer()
+  let codeEditor = CodeMirror(editor, { mode: "javascript", addModeClass: true, flattenSpans: false, value: content });
+  setTimeout(() => codeEditor.refresh())
+  return editor
 }
 
 function shellCode(...content) {
   content = contentValue(content);
-  return pre(code(content))
+  let classes = `${editorContainer().className} p-1`;
+  return div.class(classes)(pre(code.class`CodeMirror`(content)))
 }
+
+function orderedList(...items) {
+  return ol.class`list-decimal list-outside ml-12 my-4`(
+    items.map(item => li.class`py-1`(item))
+  );
+}
+
+a = a.class`text-indigo-700 hover:text-indigo-500`;
+p = p.class`my-2`;
 
 const content =
   div.class`text-lg leading-relaxed`(
@@ -48,10 +71,10 @@ const content =
       Webscript is an HTML-like Javascript syntax for creating, composing and manipulating DOM elements. 
       Use it to create web pages, web sites and web applications. It is like HTML but it is Javascript.
     `,
-    ol.class`list-decimal list-inside ml-5 my-3`(
-      li`Webscript is an ES6 Module and uses ES6 features.`,
-      li`It has zero dependencies.`,
-      li`It is small. It is 3.37KB.`
+    orderedList(
+      "Webscript is an ES6 Module and uses ES6 features.",
+      "It has zero dependencies.",
+      "It is small. It is about 2KB."
     ),
     smallHeader`Example`,
     p`HTML`,
@@ -62,35 +85,55 @@ const content =
 </div>`,
     p.class`pt-2``Webscript:`,
     javascriptCode
-      `div\`card-image\`(
+      `div.class\`card-image\`(
   img.src\`images/sample-1.jpg\`.alt\`Sample Image\`,
-  span\`card-title\`("Card Title"))`,
+  span.class\`card-title\`("Card Title"))`,
     header`Installation`,
     shellCode`npm install webscript`,
-    p.class`p-4``Or use a CDN in an ES6 Module:`,
+    p.class`py-4``Or use a CDN in an ES6 Module:`,
     javascriptCode`import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'`,
+    header`Why? - Short Version`,
+    orderedList(
+      `Webscript is much more capable than HTML.`,
+      `Webscript is a nicer syntax than Hyperscript.`,
+      `Webscript is more flexible and capable than HTML templating languages like HTM and lit-html.`,
+      `Webscript works really well with Javasacript because Webscript is Javascript.`,
+      `No need for a compiler or special tooling.`,
+    ),
+    p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k``Why Webscript?`} `,
+    header`Server Side`,
+    p`Webscript can be used on the server to generate HTML to feed search engines or for other reasons.`,
+    header`Usage Example`,
+    p`In your index.html file:`,
+    htmlCode
+      `<body>
+<script type="module" src="app.js"></script>
+</body>`,
+    p`
+      Below is your app.js file. It uses ${a.href`https://tailwindcss.com/``Tailwind CSS`} to make a card.
+      Note that any CSS library can be used with Webscript.
+    `
 
-    //pre(code`language-javascript`('h1.id`myid`.class`class1 class2`("Hello World!")')),
 
   )
 
 
 const contentNav =
-  div.class`fixed inset-0 bg-gray-100 z-0`(
+  div.class`fixed inset-0 bg-cool-gray-100 z-0`(
     div.class`max-w-7xl mx-auto mt-16 border`(
       div`hello`
     )
   )
 
 const app =
-  body.class`bg-white`(
+  body(
     contentNav,
     div.id`top`.class`border-b border-gray-300 relative bg-white z-20`(
       div.class`max-w-5xl mx-auto h-16 flex items-center divide-x divide-gray-400`(
         h1.class`font-bold text-2xl``Webscript`,
       )
     ),
-    div.class`relative max-w-3xl mx-auto bg-white z-10 border-l px-10`(
+    div.class`relative max-w-3xl mx-auto bg-white z-10 border-l border-t mt-3 px-10`(
       content
 
     )
