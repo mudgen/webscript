@@ -157,8 +157,8 @@ function elementBuildersBuilder(elementConstructor = createElement, elements = [
   }
 }
 const elementBuilders = elementBuildersBuilder();
-if (document.currentScript === null
-  || typeof document.currentScript === "undefined") {
+if (document.currentScript !== null
+  && typeof document.currentScript !== "undefined") {
   // @ts-ignore
   window.Webscript = { elementBuilders }
 }
