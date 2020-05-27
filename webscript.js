@@ -14,6 +14,7 @@ function templateValues(args) {
   return result
 }
 
+
 function elementBuilderBuilder(elementConstructor, element) {
   function setPropertyValue(...args) {
     let [first] = args;
@@ -64,16 +65,12 @@ function elementBuilderBuilder(elementConstructor, element) {
           return setPropsValues;
         }
         else if (typeof prop === "string") {
-          if (prop.startsWith("data")) {
-            prop = prop.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
+          if (prop.endsWith("Value") && prop.length > 5) {
+            return target.__element_info__.props[prop.slice(0, -5)]
           }
           target.__element_info__.prop = prop;
           return setPropertyValue;
         }
-      },
-      set(target, prop, value) {
-        target[prop] = value;
-        return true;
       }
     })
     builder.__element_info__ = propsInfo;
@@ -95,7 +92,7 @@ function elementBuilders(elementConstructor, elements = []) {
     return builders;
   }
   else {
-    return new Proxy(() => { }, {      
+    return new Proxy(() => { }, {
       get(target, prop) {
         const result = target[prop];
         if (typeof result !== "undefined") {

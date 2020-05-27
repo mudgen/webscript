@@ -1,6 +1,6 @@
 const CodeMirror = window.CodeMirror;
 import elementBuilders from '../webscript.js';
-import {createElement} from '../createelement.js'
+import { createElement } from '../createelement.js'
 let { body, div, p, img, nav, h1, h2, ol, li, pre, code, a, span } = elementBuilders(createElement);
 
 function contentValue(values) {
@@ -20,7 +20,7 @@ function contentValue(values) {
 h1 = h1.exec((builder, children) => {
   let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-");
-  return builder.id(id).class`text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
+  return builder.id(id).class`text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200 leading-snug`(content)
 })
 
 h2 = h2.exec((builder, children) => {
@@ -62,7 +62,7 @@ function orderedList(...items) {
 }
 
 a = a.class`text-indigo-700 hover:text-indigo-500`;
-p = p.class`my-4`;
+p = p.class`my-5`;
 code = code.class`bg-cool-gray-200 px-1 rounded`;
 
 const content =
@@ -93,14 +93,16 @@ const content =
     shellCode`npm install webscript`,
     p.class`py-4``Or use a CDN in an ES6 Module:`,
     javascriptCode`import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'`,
-    h1`Why? - Short Version`,
+    h1`Why Webscript?`,
     orderedList(
       `Webscript is much more capable than HTML.`,
       `Webscript is a nicer syntax than Hyperscript.`,
-      `Webscript is more flexible and capable than HTML templating languages like HTM and lit-html.`,
+      `Webscript is more flexible and capable than HTML templating languages.`,
       `Webscript works really well with Javasacript because Webscript is Javascript.`,
       `No need for a compiler or special tooling.`,
+      `Works with existing Javascript user-interface libraries.`
     ),
+    p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
     p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
     h1`Usage Example`,
     p`In your index.html file:`,
@@ -110,7 +112,7 @@ const content =
 </body>`,
     p`
       Below is your app.js file. It uses ${a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
-      Note that any CSS library can be used with Webscript.
+      Note that other CSS libraries can be used with Webscript.
     `,
     javascriptCode
       `import elementBuilders from 'webscript'
