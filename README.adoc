@@ -1,23 +1,18 @@
-# Table of Contents
- * [What is it?](#what-is-it)
- * [Installation](#installation)
- * [Why? - Short Version](#why---short-version)
- * [Why? - Long Version](#why---long-version)
- * [Server Side](#server-side)
- * [Usage Example](#usage-example)
- * [Use it in React, Vue and other libraries and frameworks!](#use-it-in-react-vue-and-other-libraries-and-frameworks)
-    * [React Example](#react-example)
-    * [By Itself](#by-itself)
+:toc: macro
+:toclevels: 3
 
+# Webscript
 
-# What is it?
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
 
 1. Webscript is an ES6 Module and uses ES6 features.
 2. It has zero dependencies.
 3. It is small. It's size is 3.22KB
 
-## Example
+toc::[]
+
+
+## Quick Example
 
 HTML:
 ```html
@@ -34,11 +29,11 @@ div.class`card-image`(
   span.class`card-title`("Card Title"))
 ```
 
-[See more examples.](https://mudgen.github.io/webscript/html2webscript/#bulma-card)
+https://mudgen.github.io/webscript/html2webscript/#bulma-card[See more examples.]
 
-# Installation
+## Installation
 
-```bash
+```sh
 npm install webscript
 ```
 
@@ -48,18 +43,18 @@ Or use a CDN in an ES6 module:
 import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js';
 ```
 
-# Why? - Short Version
+## Why? - Short Version
 1. Webscript is much more capable than HTML.
 2. Webscript is a nicer syntax than Hyperscript.  
 3. Webscript is simpler, more flexible and more capable than HTML templating languages like HTM and lit-html.
 4. Webscript works really well with Javasacript because Webscript is Javascript.
 5. No need for a compiler or special tooling.
 
-# Why? - Longer Version
+## Why? - Longer Version
 
 You might not believe it or think it at first but HTML and Javascript don't go together well. They started out together and have been together so long that it might seem normal they are used together. Take a step back and think about the solutions that exist to make them work together.
 
-[JSX](https://reactjs.org/docs/jsx-in-depth.html) is a compiler on top of Javascript that puts HTML in Javascript. The many templating languages such as used by [Vue](https://vuejs.org/v2/guide/syntax.html) and other frameworks try to put Javascript or custom programming languages into HTML.
+https://reactjs.org/docs/jsx-in-depth.html[JSX] is a compiler on top of Javascript that puts HTML in Javascript. The many templating languages such as used by https://vuejs.org/v2/guide/syntax.html[Vue] and other frameworks try to put Javascript or custom programming languages into HTML.
 
 If Javascript and HTML went together, they would just be used together. But they are not just used together. They are forced together this way and that way. They are oil and water. They don't go together.
 
@@ -73,7 +68,7 @@ Of course, with Javascript we can go far beyond just telling the browser what DO
 
 *Why Webscript? Because Javascript works best with Javascript and Webscript is Javascript.*
 
-# Usage Example
+## Usage Example
 
 In your `index.html` file:
 ```html
@@ -82,7 +77,7 @@ In your `index.html` file:
 </body>
 ```
 
-Below is your `app.js` file. It uses [Tailwind CSS](https://tailwindcss.com/) to make a card. Note that any CSS library can be used with Webscript.
+Below is your `app.js` file. It uses https://tailwindcss.com/[Tailwind CSS] to make a card. Note that any CSS library can be used with Webscript.
 
 ```javascript
 import elementBuilders from 'webscript'
@@ -113,21 +108,21 @@ This is a simple example. Any kind of Javascript composition or manipulation can
 
 Here is the result of the above code:
 
-![Example Webscript Result](./example.png)
+image:https://user-images.githubusercontent.com/292738/83057913-9018cd00-a025-11ea-83b0-706c0e5b790d.png[Example Webscript Result]
 
-# Use it in React, Vue and other libraries and frameworks!
+## Use it in React, Vue and other libraries and frameworks!
 
 Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without a library.
 
 Webscript interoperates with libraries and frameworks by taking a function from them that is used to create the elements. Webscript's `elementBuilders` function is called with the function from the library/framework. Let's call this function from the library or framework `createElement` because it is often called that.
 
-The `createElement` function must have the following parameters: `components, properties, ...children`. These are exactly the parameters used by React's [React.createElement](https://reactjs.org/docs/react-without-jsx.html) function. Vue also provides a [createElement function](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) with these parameters.
+The `createElement` function must have the following parameters: `components, properties, ...children`. These are exactly the parameters used by React's https://reactjs.org/docs/react-without-jsx.html[React.createElement] function. Vue also provides a https://vuejs.org/v2/guide/render-function.html#createElement-Arguments[createElement function] with these parameters.
 
 Webscript should work with any library or framework that provides a `createElement` function that has the above parameters.
 
 Here is an example of using Webscript in React. 
 
-## React Example
+### React Example
 
 ```javascript
 import React from 'react';
