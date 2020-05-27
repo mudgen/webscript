@@ -12,6 +12,9 @@
     "minifywebscript": "terser webscript.js --module -m reserved=['elementBuilders'] -o webscript.min.js",
     "minifycreateelement": "terser createelement.js --module -m reserved=['createElement','createSVGElement'] -o createelement.min.js"
   },
+  "devDependencies": {
+    "terser": "^4.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mudgen/webscript.git"
