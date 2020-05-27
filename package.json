@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify": "terser webscript.js --module -m reserved=['elementBuilders'] -o webscript.min.js"
+    "minifywebscript": "terser webscript.js --module -m reserved=['elementBuilders'] -o webscript.min.js",
+    "minifycreateelement": "terser createelement.js --module -m reserved=['createElement','createSVGElement'] -o createelement.min.js"
   },
   "repository": {
     "type": "git",

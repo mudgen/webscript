@@ -1,46 +1,3 @@
-// @ts-check
-
-function addChild(element, child) {
-  if (typeof child === "number"
-    || typeof child === "bigint"
-    || typeof child === "boolean"
-    || child instanceof Date
-    || child instanceof RegExp) {
-    element.append(String(child))
-  }
-  else if (Array.isArray(child)) {
-    for (const childChild of child) {
-      addChild(element, childChild);
-    }
-  }
-  else if (typeof child !== "undefined" && child !== null) {
-    element.append(child);
-  }
-}
-
-function createElement(tagName, props, ...children) {
-  tagName = tagName.toLowerCase();
-  const element = ["svg", "path", "title"].includes(tagName) ?
-    document.createElementNS("http://www.w3.org/2000/svg", tagName) :
-    document.createElement(tagName);
-  for (let key in props) {
-    let value = props[key];
-    if (typeof value === "string") {
-      if (key === "className") {
-        key = "class"
-      }
-      element.setAttribute(key, value)
-    }
-    else {
-      element[key] = value;
-    }
-  }
-  for (const child of children) {
-    addChild(element, child);
-  }
-  return element;
-}
-
 
 function templateValues(args) {
   const [strings, ...templateArgs] = args;
@@ -58,7 +15,7 @@ function templateValues(args) {
 }
 
 function elementBuilderBuilder(elementConstructor, element) {
-  function getPropertyValue(...args) {
+  function setPropertyValue(...args) {
     let [first] = args;
     if (typeof first === "undefined") {
       first = '';
@@ -70,7 +27,7 @@ function elementBuilderBuilder(elementConstructor, element) {
     props = { ...props, [prop]: first }
     return elementBuilder({ props, prop: null });
   }
-  function getPropsValues(props) {
+  function setPropsValues(props) {
     let { props: existingProps } = this.__element_info__;
     props = { ...existingProps, ...props }
     return elementBuilder({ props, prop: null });
@@ -104,15 +61,14 @@ function elementBuilderBuilder(elementConstructor, element) {
           return result;
         }
         if (prop === "props") {
-          return getPropsValues;
+          return setPropsValues;
         }
         else if (typeof prop === "string") {
           if (prop.startsWith("data")) {
             prop = prop.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
           }
-          // @ts-ignore
           target.__element_info__.prop = prop;
-          return getPropertyValue;
+          return setPropertyValue;
         }
       },
       set(target, prop, value) {
@@ -127,12 +83,10 @@ function elementBuilderBuilder(elementConstructor, element) {
 }
 
 
-function elementBuildersBuilder(elementConstructor = createElement, elements = []) {
-  if (Object.prototype.toString.call(elementConstructor) === '[object Object]') {
-    elementConstructor = elementConstructor["elementConstructor"] || createElement;
-    elements = elementConstructor["elements"] || [];
+function elementBuilders(elementConstructor, elements = []) {
+  if (typeof elementConstructor !== "function") {
+    throw Error("elementConstructor argument must be present and it must be a function.")
   }
-  elementConstructor = elementConstructor || createElement;
   if (elements.length > 0) {
     let builders = [];
     for (const element of elements) {
@@ -141,10 +95,7 @@ function elementBuildersBuilder(elementConstructor = createElement, elements = [
     return builders;
   }
   else {
-    return new Proxy(() => { }, {
-      apply(target, thisArg, args) {
-        return elementBuildersBuilder(...args);
-      },
+    return new Proxy(() => { }, {      
       get(target, prop) {
         const result = target[prop];
         if (typeof result !== "undefined") {
@@ -156,10 +107,9 @@ function elementBuildersBuilder(elementConstructor = createElement, elements = [
     });
   }
 }
-const elementBuilders = elementBuildersBuilder();
+
 if (document.currentScript !== null
   && typeof document.currentScript !== "undefined") {
-  // @ts-ignore
   window.Webscript = { elementBuilders }
 }
 export default elementBuilders;

@@ -1,6 +1,7 @@
 const CodeMirror = window.CodeMirror;
 import elementBuilders from '../webscript.js';
-let { body, div, p, nav, h1, ol, li, pre, code, a } = elementBuilders;
+import {createElement} from '../createelement.js'
+let { body, div, p, img, nav, h1, h2, ol, li, pre, code, a, span } = elementBuilders(createElement);
 
 function contentValue(values) {
   const [first] = values;
@@ -16,18 +17,17 @@ function contentValue(values) {
 }
 
 
-const header = h1.exec((builder, children) => {
+h1 = h1.exec((builder, children) => {
   let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-");
   return builder.id(id).class`text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
 })
 
-const smallHeader = h1.exec((builder, children) => {
+h2 = h2.exec((builder, children) => {
   let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-");
   return builder.id(id).class`text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
 })
-
 
 function editorContainer() {
   return div.class`rounded-md bg-cool-gray-100`();
@@ -62,11 +62,12 @@ function orderedList(...items) {
 }
 
 a = a.class`text-indigo-700 hover:text-indigo-500`;
-p = p.class`my-2`;
+p = p.class`my-4`;
+code = code.class`bg-cool-gray-200 px-1 rounded`;
 
 const content =
   div.class`text-lg leading-relaxed`(
-    header`What is Webscript?`,
+    h1`What is Webscript?`,
     p`
       Webscript is an HTML-like Javascript syntax for creating, composing and manipulating DOM elements. 
       Use it to create web pages, web sites and web applications. It is like HTML but it is Javascript.
@@ -76,23 +77,23 @@ const content =
       "It has zero dependencies.",
       "It is small. It is about 2KB."
     ),
-    smallHeader`Example`,
+    h2`Example`,
     p`HTML`,
     htmlCode
       `<div class="card-image">
   <img src="images/sample-1.jpg" alt="Sample Image" />
   <span class="card-title">Card Title</span>
 </div>`,
-    p.class`pt-2``Webscript:`,
+    p.addClass`mt-6``Webscript:`,
     javascriptCode
       `div.class\`card-image\`(
   img.src\`images/sample-1.jpg\`.alt\`Sample Image\`,
   span.class\`card-title\`("Card Title"))`,
-    header`Installation`,
+    h1`Installation`,
     shellCode`npm install webscript`,
     p.class`py-4``Or use a CDN in an ES6 Module:`,
     javascriptCode`import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'`,
-    header`Why? - Short Version`,
+    h1`Why? - Short Version`,
     orderedList(
       `Webscript is much more capable than HTML.`,
       `Webscript is a nicer syntax than Hyperscript.`,
@@ -100,23 +101,54 @@ const content =
       `Webscript works really well with Javasacript because Webscript is Javascript.`,
       `No need for a compiler or special tooling.`,
     ),
-    p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k``Why Webscript?`} `,
-    header`Server Side`,
-    p`Webscript can be used on the server to generate HTML to feed search engines or for other reasons.`,
-    header`Usage Example`,
+    p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
+    h1`Usage Example`,
     p`In your index.html file:`,
     htmlCode
       `<body>
-<script type="module" src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>`,
     p`
-      Below is your app.js file. It uses ${a.href`https://tailwindcss.com/``Tailwind CSS`} to make a card.
+      Below is your app.js file. It uses ${a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
       Note that any CSS library can be used with Webscript.
-    `
+    `,
+    javascriptCode
+      `import elementBuilders from 'webscript'
 
+const { body, div, p, span, img } = elementBuilders; 
 
+const tag = span.class\`inline-block bg-gray-200 rounded-full px-3 py-1 mr-2\`;
+
+const app =
+  body.class\`flex items-center justify-center h-screen\`(
+    div.class\`max-w-sm rounded overflow-hidden shadow-lg\`(
+      img.class\`w-full\`.src\`img/card-top.jpg\`.alt\`Sunset in the mountains\`,
+      div.class\`px-6 py-4\`(
+        div.class\`font-bold text-xl mb-2\`("The Coldest Sunset"),
+        p.class\`text-gray-700 text-base\`(
+          " Lorem ipsum dolor sit amet, consectetur adipisicing ...")),
+      div.class\`px-6 py-4 text-sm font-semibold text-gray-700\`(
+        tag\`#photography\`,
+        tag\`#travel\`,
+        tag\`#winter\`)));
+  
+document.body = app;`,
+    p`A couple things to notice. There is no HTML templating here. body, div, img, p, span are Javascript functions. 
+    The classes variable is a regular Javascript variable. It reduces some duplication by being assigned a string of 
+    class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the 
+    spans in the above code.`,
+    p`This is a simple example. Any kind of Javascript composition or manipulation can be done because we have the full Javascript language at our disposal. 
+    The above is Javascript strings, variables and functions.`,
+    p`Here is the result of the above code:`,
+    img.src`example.png`.alt`Result of example code`,
+    h1`Use it in React, Vue and other libraries and frameworks!`,
+    p`Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without a library.`,
+    p`
+      Webscript interoperates with libraries and frameworks by taking a function from them that is used to create the elements. 
+      Webscript's ${code`elementBuilders`} function is called with the function from the library/framework. Let's call this function from 
+      the library or framework createElement because it is often called that.
+    `,
   )
-
 
 const contentNav =
   div.class`fixed inset-0 bg-cool-gray-100 z-0`(
@@ -125,7 +157,7 @@ const contentNav =
     )
   )
 
-const app =
+let app =
   body(
     contentNav,
     div.id`top`.class`border-b border-gray-300 relative bg-white z-20`(
@@ -138,5 +170,6 @@ const app =
 
     )
   );
+
 
 document.body = app;
