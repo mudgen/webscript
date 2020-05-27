@@ -1,7 +1,7 @@
 {
   "name": "webscript",
   "version": "0.0.4",
-  "description": "HTML replacement.  Better Javascript syntax for creating web (pages/sites/apps).",
+  "description": "HTML replacement.  Better Javascript syntax for creating web applications.",
   "type": "module",
   "main": "webscript.js",
   "directories": {

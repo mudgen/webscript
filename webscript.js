@@ -14,18 +14,22 @@ function templateValues(args) {
   return result
 }
 
-
 function elementBuilderBuilder(elementConstructor, element) {
   function setPropertyValue(...args) {
-    let [first] = args;
-    if (typeof first === "undefined") {
-      first = '';
-    }
-    else if (Array.isArray(first) && Object.isFrozen(first)) {
-      first = templateValues(args).join("");
-    }
+    let [value] = args;
     let { props, prop } = this.__element_info__;
-    props = { ...props, [prop]: first }
+    if (typeof value === "undefined") {
+      props = { ...props }
+      delete props[prop];
+      return elementBuilder({ props, prop: null });
+    }
+    else if (Array.isArray(value) && Object.isFrozen(value)) {
+      value = templateValues(args).join("");
+    }
+    else if (args.length > 1) {
+      value = args;
+    }
+    props = { ...props, [prop]: value }
     return elementBuilder({ props, prop: null });
   }
   function setPropsValues(props) {
@@ -47,6 +51,11 @@ function elementBuilderBuilder(elementConstructor, element) {
         let [first] = children;
         if (Array.isArray(first) && Object.isFrozen(first)) {
           children = templateValues(children);
+        }
+        if (Array.isArray(props.children)) {
+          props.children.push(...children)
+          children = props.children;
+          delete props.children;
         }
         for (let i = 0; i < children.length; i++) {
           let arg = children[i];

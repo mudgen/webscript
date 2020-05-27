@@ -1,7 +1,7 @@
 const CodeMirror = window.CodeMirror;
 import elementBuilders from '../webscript.js';
 import { createElement } from '../createelement.js'
-let { body, div, p, img, nav, h1, h2, ol, li, pre, code, a, span } = elementBuilders(createElement);
+let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span } = elementBuilders(createElement);
 
 function contentValue(values) {
   const [first] = values;
@@ -28,6 +28,8 @@ h2 = h2.exec((builder, children) => {
   let id = content.trim().replace(/\s+/g, "-");
   return builder.id(id).class`text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
 })
+
+h3 = h3.class`text-xl font-medium mt-10`;
 
 function editorContainer() {
   return div.class`rounded-md bg-cool-gray-100`();
@@ -63,32 +65,72 @@ function orderedList(...items) {
 
 a = a.class`text-indigo-700 hover:text-indigo-500`;
 p = p.class`my-5`;
-code = code.class`bg-cool-gray-200 px-1 rounded`;
+code = code.class`text-lg bg-cool-gray-200 px-1 rounded`;
 
 const content =
-  div.class`text-lg leading-relaxed`(
+  div.class`text-lg leading-relaxed pb-2 mb-6`(
     h1`What is Webscript?`,
     p`
       Webscript is an HTML-like Javascript syntax for creating, composing and manipulating DOM elements. 
-      Use it to create web pages, web sites and web applications. It is like HTML but it is Javascript.
+      Use it to create web applications. It is like HTML but it is Javascript.
     `,
     orderedList(
       "Webscript is an ES6 Module and uses ES6 features.",
       "It has zero dependencies.",
       "It is small. It is about 2KB."
     ),
-    h2`Example`,
-    p`HTML`,
+    h1`Introduction`,
+    p`Let's compare HTML to Webscript. Here is some HTML:`,
     htmlCode
       `<div class="card-image">
   <img src="images/sample-1.jpg" alt="Sample Image" />
   <span class="card-title">Card Title</span>
 </div>`,
-    p.addClass`mt-6``Webscript:`,
+    p.addClass`mt-6``Here is the Webscript version:`,
     javascriptCode
       `div.class\`card-image\`(
   img.src\`images/sample-1.jpg\`.alt\`Sample Image\`,
   span.class\`card-title\`("Card Title"))`,
+    p`
+      Webscript is not an HTML templating language. Webscript uses Javascript, not a templating language.
+      Therefore Webscript gives you the full power of Javascript and not the limitations of a template language.
+    `,
+    p`    
+      In the above example ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects. And ${code`class`},
+      ${code`src`} and ${code`alt`} are Javascript methods.
+    `,
+    h2`Tagged Template Literals`,
+    p`
+      Webscript uses tagged template literals which is the syntax above with the backticks. For example ${code`src\`images/sample-1.jpg\``} is      
+      a tagged template literal.
+    `,
+    p`
+     Tagged template literals are a nice way to call a Javascript function or method with string arguments. Tagged template literals are a standard feature of Javascript.
+     `,
+    p`Webscript uses tagged template literals for its consise, clear syntax for calling functions with strings. However Webscript functions can also be called without 
+    tagged template literals.`,
+    p`This works:`,
+    javascriptCode`img.src\`images/sample-1.jpg\`.alt\`Sample Image\``,
+    p`And this works too:`,
+    javascriptCode`img.src("images/sample-1.jpg").alt("Sample Image")`,
+    h2`Builder Pattern`,
+    p`The builder pattern is a way to build up an object step by step. Webscript uses the builder pattern to build the properties of an element and then create it.`,
+    p`
+      A Webscript function, such as ${code`img`} or ${code`div`}, is called an element builder or builder for short.
+      Here is an example that shows how an element is built and created using an ${code`a`} builder.
+    `,
+    javascriptCode`a.href\`https://github.com/mudgen/webscript\`.target\`_blank\`("Webscript")`,
+    orderedList(
+      span`The ${code`href`} method is called which creates and returns a new ${code`a`} builder with the "href" property set to the value of the URL.`,
+      span`
+        The ${code`target`} method is called which creates and returns a new ${code`a`} builder with the "target" property set to '_blank'.
+        Properties 'href' and 'target' now have values within the ${code`a`} builder.
+        `,
+      span`The parentheses at the end of the builder cause it to execute as a function. The argument to the builder, ${code`"Webscript"`}, becomes the child of the element.`,
+      span`The builder function execution returns the created, finished 'a' element.`,
+    ),
+    p("Here is the resulting link created by the ", code`a`, " builder: ", a.href`https://github.com/mudgen/webscript`.target`_blank`("Webscript")),
+
     h1`Installation`,
     shellCode`npm install webscript`,
     p.class`py-4``Or use a CDN in an ES6 Module:`,
@@ -104,6 +146,7 @@ const content =
     ),
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
     p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
+    h1`Webscript Element Builders`,
     h1`Usage Example`,
     p`In your index.html file:`,
     htmlCode
@@ -115,9 +158,10 @@ const content =
       Note that other CSS libraries can be used with Webscript.
     `,
     javascriptCode
-      `import elementBuilders from 'webscript'
+      `import elementBuilders from './webscript.js'
+import { createElement } from './createelement.js'
 
-const { body, div, p, span, img } = elementBuilders; 
+const { body, div, p, span, img } = elementBuilders(createElement); 
 
 const tag = span.class\`inline-block bg-gray-200 rounded-full px-3 py-1 mr-2\`;
 
@@ -150,6 +194,71 @@ document.body = app;`,
       Webscript's ${code`elementBuilders`} function is called with the function from the library/framework. Let's call this function from 
       the library or framework createElement because it is often called that.
     `,
+    p`
+      The createElement function must have the following parameters: components, properties, ...children. 
+      These are exactly the parameters used by React's React.createElement function. 
+      Vue also provides a createElement function with these parameters.
+    `,
+    p`
+      Webscript should work with any library or framework that provides a createElement function that has the above parameters.
+    `,
+    p`
+      Here is an example of using Webscript in React.
+    `,
+    h1`React Example`,
+    javascriptCode
+      `import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import elementBuilders from 'webscript'
+
+const { div, header, p, a, img, code } = elementBuilders(React.createElement);
+
+function App() {
+  return (
+    div.class\`App\`(
+      header.class\`App-header\`(
+        img.class\`App-logo\`.src(logo).alt\`logo\`,
+        p("Edit ", code("src/App.js"), " and save to reload."),
+        a.class\`App-link\`
+         .href\`https://reactjs.org\`
+         .target\`_blank\`
+         .rel\`noopener noreferrer\`(
+           "Learn React"
+         ))))
+}`,
+    p`
+    A nice thing about React Hooks is that they are functions and so can be used directly within Webscript.
+  `,
+    p`
+    However class-based React elements are not functions. They can still be used in Webscript by passing them in an array to 
+    elementBuilders in order to convert them into functions. In the example below the StrictMode component is converted to a function and used. 
+    The App React Hook we created in our last example is used directly without any conversion.
+  `,
+    javascriptCode
+      `import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import elementBuilders from 'webscript';
+
+const [StrictMode] = elementBuilders(React.createElement, [React.StrictMode]);
+
+ReactDOM.render(
+  StrictMode(
+    App()
+  ),
+  document.getElementById('root')
+);`,
+    h1`Without a Library`,
+    p`Webscript comes with a simple createElement function that creates DOM elements.`,
+    javascriptCode
+      `import elementBuilders from 'webscript'
+
+const { div, p } = elementBuilders;
+
+const myDiv = div(p("hello world"))`,
+    p`In the above example myDiv is assigned a regular DOM div element with a regular DOM p element inside it.`,
+
   )
 
 const contentNav =
