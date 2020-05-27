@@ -108,7 +108,7 @@ This is a simple example. Any kind of Javascript composition or manipulation can
 
 Here is the result of the above code:
 
-image:./example.png[Example Webscript Result]
+image:https://user-images.githubusercontent.com/292738/83057913-9018cd00-a025-11ea-83b0-706c0e5b790d.png[Example Webscript Result]
 
 ## Use it in React, Vue and other libraries and frameworks!
 
