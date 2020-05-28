@@ -116,7 +116,7 @@ const content =
     h2`Builder Pattern`,
     p`The builder pattern is a way to build up an object step by step. Webscript uses the builder pattern to build the properties of an element and then create it.`,
     p`
-      A Webscript function, such as ${code`img`} or ${code`div`}, is called an element builder or builder for short.
+      A Webscript object, such as ${code`img`} or ${code`div`}, is called an element builder or builder for short.
       Here is an example that shows how an element is built and created using an ${code`a`} builder.
     `,
     javascriptCode`a.href\`https://github.com/mudgen/webscript\`.target\`_blank\`("Webscript")`,
@@ -142,6 +142,7 @@ const content =
       `Webscript is more flexible and capable than HTML templating languages.`,
       `Webscript works really well with Javasacript because Webscript is Javascript.`,
       `No need for a compiler or special tooling.`,
+      `No extra build step.`,
       `Works with existing Javascript user-interface libraries.`
     ),
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
@@ -164,7 +165,7 @@ const content =
 
 const { body, div, p, span, img } = elementBuilders(createElement);`,
     p`${code`createElement`} is the actual function that creates the elements. A builder executes  ${code`createElement`} internally when the builder is called as a function.`,
-    p`The ${code`createElement`} function is written by you or it is supplied by your library or framework.`,
+    p`The ${code`createElement`} function is written by you or it is supplied by a library or framework.`,
     p`
      So a builder builds up the properties of an element or component and then converts it into an element by calling the ${code`createElement`} function that
      was passed into Webscript's ${code`elementBuilders`} function.`,
@@ -176,7 +177,7 @@ const { body, div, p, span, img } = elementBuilders(createElement);`,
     `,
     p`
       The Webscript project provides an implementation of ${code`createElement`} that creates vanilla browser DOM elements. And it provides a ${code`createSVGElement`} function for creating
-      SVG elements in a browser. These can be found in the ${code`createelement.js`} Javascript module. 
+      SVG elements in the browser. These can be found in the ${code`createelement.js`} Javascript module. 
     `,
 
     h1`Usage Example`,
@@ -186,7 +187,7 @@ const { body, div, p, span, img } = elementBuilders(createElement);`,
   <script type="module" src="app.js"></script>
 </body>`,
     p`
-Below is your ${code`app.js`} file. It uses ${ a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
+Below is your ${code`app.js`} file. It uses ${a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
 Note that other CSS libraries can be used with Webscript.
     `,
     javascriptCode
@@ -217,11 +218,16 @@ document.body = app;`,
     ${code`tag`} is an object, or element builder, that has been created with the 'class' property preset with some classes. This 
     creates one place where the display of tags can be modified. This is a good example of code reuse with Webscript.
     `,
-        
+
     p`This is a simple example. Any kind of Javascript composition or manipulation can be done because we have the full Javascript language at our disposal. 
     The above is Javascript objects, strings, variables and functions.`,
     p`Here is the result of the above code:`,
     img.src`example.png`.alt`Result of example code`,
+    h1`Convert HTML to Webscript`,
+    p`HTML can be converted to Webscript using the 
+      ${a.href`https://mudgen.github.io/webscript/html2webscript/`.target`_blank``html2webscript`}  web application.`,
+    p`It is also useful to see how Webscript compares to HTML. In the application click on the "Insert Random Example" button to see examples of Webscript.`,
+
     h1`Use it in React, Vue and other libraries and frameworks!`,
     p`Webscript was designed to be used in existing libraries and frameworks.`,
     p`
@@ -229,12 +235,13 @@ document.body = app;`,
       Webscript's ${code`elementBuilders`} function is called with the ${code`createElement`} function from the library/framework.
     `,
     p`
-      The ${code`createElement`} function generally has the following parameters: components, properties, ...children. 
+      The ${code`createElement`} function generally has the following parameters: ${code`components, properties, ...children`}. 
       These are exactly the parameters used by React's ${code`React.createElement`} function. 
-      Vue also provides a createElement function with these parameters.
+      Vue also provides a ${code`createElement`} function.
     `,
     p`
-      Webscript should work with any library or framework that provides a createElement function that has the above parameters.
+      Webscript should work with any library or framework that provides a ${code`createElement`} function that has the above parameters.
+      Webscript can also be adapted to fit similar ${code`createElement`} functions that don't fit the API exactly.
     `,
     p`
       Here is an example of using Webscript in React.
@@ -250,11 +257,11 @@ const { div, header, p, a, img, code } = elementBuilders(React.createElement);
 
 function App() {
   return (
-    div.class\`App\`(
-      header.class\`App-header\`(
-        img.class\`App-logo\`.src(logo).alt\`logo\`,
+    div.className\`App\`(
+      header.className\`App-header\`(
+        img.className\`App-logo\`.src(logo).alt\`logo\`,
         p("Edit ", code("src/App.js"), " and save to reload."),
-        a.class\`App-link\`
+        a.className\`App-link\`
          .href\`https://reactjs.org\`
          .target\`_blank\`
          .rel\`noopener noreferrer\`(
@@ -266,8 +273,8 @@ function App() {
   `,
     p`
     However class-based React elements are not functions. They can still be used in Webscript by passing them in an array to 
-    elementBuilders in order to convert them into functions. In the example below the StrictMode component is converted to a function and used. 
-    The App React Hook we created in our last example is used directly without any conversion.
+    ${code`elementBuilders`} in order to convert them into functions. In the example below the ${code`StrictMode`} component is converted to a function and used. 
+    The ${code`App`} React Hook we created in our last example is used directly without any conversion.
   `,
     javascriptCode
       `import React from 'react';
@@ -284,33 +291,37 @@ ReactDOM.render(
   document.getElementById('root')
 );`,
     h1`Without a Library`,
-    p`Webscript comes with a simple createElement function that creates DOM elements.`,
+    p`
+    The Webscript project provides a simple ${code`createElement`} function that creates vanilla DOM elements. It also provides 
+    a ${code`createSVGElement`} function that create SVG elements.
+    `,
     javascriptCode
-      `import elementBuilders from 'webscript'
+      `import elementBuilders from './webscript.js'
+import { createElement, createSVGElement } from './createelement.js'
+const { body, div, p } = elementBuilders(createElement);
+const { svg } = elementBuilders(createSVGElement);
 
-const { div, p } = elementBuilders;
-
-const myDiv = div(p("hello world"))`,
-    p`In the above example myDiv is assigned a regular DOM div element with a regular DOM p element inside it.`,
-
+const myApp = div(p("hello world"))
+document.body = body(myApp);`,
+    p`The above example creates a simple webpage that says, "hello world".`,
   )
 
 const contentNav =
   div.class`fixed inset-0 bg-cool-gray-100 z-0`(
-    div.class`max-w-7xl mx-auto mt-16 border`(
-      div`hello`
+    div.class`max-w-7xl mx-auto mt-16`(
+      div``
     )
   )
 
 let app =
   body(
     contentNav,
-    div.id`top`.class`border-b border-gray-300 relative bg-white z-20`(
-      div.class`max-w-5xl mx-auto h-16 flex items-center divide-x divide-gray-400`(
+    div.id`top`.class`borcder-b bordcer-gray-300 relative bg-white z-20`(
+      div.class`max-w-5xl mx-auto h-16 flex items-center divicde-x divide-grcay-400`(
         h1.class`font-bold text-2xl``Webscript`,
       )
     ),
-    div.class`relative max-w-3xl mx-auto bg-white z-10 border-l border-t mt-3 px-10`(
+    div.class`relative max-w-3xl mx-auto bg-white z-10 shadow mt-3 px-10 rounded`(
       content
 
     )
