@@ -147,21 +147,53 @@ const content =
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
     p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
     h1`Webscript Element Builders`,
+    p`
+      Webscript element builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
+      that are called to build up the properties of an element. The actual element is created by calling the builder as
+      a function. In the example ${code`img.src\`file.png\`()`} the ${code`src`} method call sets the 'src' property.
+      And ${code`()`} causes the img builder to be executed as a function which creates the img element.
+      `,
+    p`
+      Note that it is
+      actually not necessary to execute builders, using ${code`()`}, that have no children because the containing ${code`div`}
+      or builder will execute it for you. So in the case of ${code`img`} it could just be written just like this: ${code`img.src\`file.png\``}
+    `,
+    p`Element builders are created like this:`,
+    javascriptCode
+      `import elementBuilders from './webscript.js'  
+
+const { body, div, p, span, img } = elementBuilders(createElement);`,
+    p`${code`createElement`} is the actual function that creates the elements. A builder executes  ${code`createElement`} internally when the builder is called as a function.`,
+    p`The ${code`createElement`} function is written by you or it is supplied by your library or framework.`,
+    p`
+     So a builder builds up the properties of an element or component and then converts it into an element by calling the ${code`createElement`} function that
+     was passed into Webscript's ${code`elementBuilders`} function.`,
+    p`Generally the ${code`createElement`} function has this function signature: ${code`createElement(type, props, ...children)`}.`,
+    p`
+     The types of these parameters depend on the implementation of ${code`createElement`} that is used. Webscript builders will pass an object of properties and values as the
+     'props' argument. Often the 'type' argument is a string specifiying the element like 'div' or 'p' etc. But the 'type' argument could have a particular type unique to 
+     a particular library.
+    `,
+    p`
+      The Webscript project provides an implementation of ${code`createElement`} that creates vanilla browser DOM elements. And it provides a ${code`createSVGElement`} function for creating
+      SVG elements in a browser. These can be found in the ${code`createelement.js`} Javascript module. 
+    `,
+
     h1`Usage Example`,
-    p`In your index.html file:`,
+    p`In your ${code`index.html`} file: `,
     htmlCode
       `<body>
   <script type="module" src="app.js"></script>
 </body>`,
     p`
-      Below is your app.js file. It uses ${a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
-      Note that other CSS libraries can be used with Webscript.
+Below is your ${code`app.js`} file. It uses ${ a.href`https://tailwindcss.com/`.target`_blank``Tailwind CSS`} to make a card.
+Note that other CSS libraries can be used with Webscript.
     `,
     javascriptCode
       `import elementBuilders from './webscript.js'
 import { createElement } from './createelement.js'
 
-const { body, div, p, span, img } = elementBuilders(createElement); 
+const { body, div, p, span, img } = elementBuilders(createElement);
 
 const tag = span.class\`inline-block bg-gray-200 rounded-full px-3 py-1 mr-2\`;
 
@@ -179,24 +211,26 @@ const app =
         tag\`#winter\`)));
   
 document.body = app;`,
-    p`A couple things to notice. There is no HTML templating here. body, div, img, p, span are Javascript functions. 
-    The classes variable is a regular Javascript variable. It reduces some duplication by being assigned a string of 
-    class names that are reused by spans. Regular Javascript assignment and string interpolation is used with the 
-    spans in the above code.`,
+    p`Something to note: There is no HTML templating here. ${code`body`}, ${code`div`}, ${code`img`}, ${code`p`}, ${code`span`}
+    are Javascript objects with methods that are called with Javascript's tagged template literal syntax.`,
+    p`
+    ${code`tag`} is an object, or element builder, that has been created with the 'class' property preset with some classes. This 
+    creates one place where the display of tags can be modified. This is a good example of code reuse with Webscript.
+    `,
+        
     p`This is a simple example. Any kind of Javascript composition or manipulation can be done because we have the full Javascript language at our disposal. 
-    The above is Javascript strings, variables and functions.`,
+    The above is Javascript objects, strings, variables and functions.`,
     p`Here is the result of the above code:`,
     img.src`example.png`.alt`Result of example code`,
     h1`Use it in React, Vue and other libraries and frameworks!`,
-    p`Webscript was designed to be used in existing libraries and frameworks. It can also be used by itself without a library.`,
+    p`Webscript was designed to be used in existing libraries and frameworks.`,
     p`
-      Webscript interoperates with libraries and frameworks by taking a function from them that is used to create the elements. 
-      Webscript's ${code`elementBuilders`} function is called with the function from the library/framework. Let's call this function from 
-      the library or framework createElement because it is often called that.
+      Webscript interoperates with libraries and frameworks by taking a function from them usually called ${code`createElement`} that is used to create the elements. 
+      Webscript's ${code`elementBuilders`} function is called with the ${code`createElement`} function from the library/framework.
     `,
     p`
-      The createElement function must have the following parameters: components, properties, ...children. 
-      These are exactly the parameters used by React's React.createElement function. 
+      The ${code`createElement`} function generally has the following parameters: components, properties, ...children. 
+      These are exactly the parameters used by React's ${code`React.createElement`} function. 
       Vue also provides a createElement function with these parameters.
     `,
     p`

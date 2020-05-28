@@ -63,7 +63,7 @@ function elementBuilderBuilder(elementConstructor, element) {
             children[i] = arg();
           }
         }
-        return elementConstructor(element, props, ...children);
+        return elementConstructor(element, props, children);
       },
       get(target, prop) {
         const result = target[prop];
