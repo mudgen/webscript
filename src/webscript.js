@@ -1,44 +1,47 @@
+const html = require("./htmlCreateElement");
+const svg = require("./svgCreateElement");
+const object = require("./objectCreateElement");
 
-function templateValues(args) {
+const templateValues = (args) => {
   const [strings, ...templateArgs] = args;
   const result = [];
   for (const [index, s] of strings.entries()) {
     if (s !== "") {
       result.push(s);
     }
-    let arg = templateArgs[index];
+    const arg = templateArgs[index];
     if (typeof arg !== "undefined") {
-      result.push(arg)
+      result.push(arg);
     }
   }
-  return result
-}
+  return result;
+};
 
-function elementBuilderBuilder(elementConstructor, element) {
-  function setPropertyValue(...args) {
+const elementBuilderBuilder = (elementConstructor, element) => {
+  const setPropertyValue = (...args) => {
     let [value] = args;
     let { props, prop } = this.__element_info__;
     if (typeof value === "undefined") {
-      props = { ...props }
+      props = { ...props };
       delete props[prop];
       return elementBuilder({ props, prop: null });
-    }
-    else if (Array.isArray(value) && Object.isFrozen(value)) {
+    } else if (Array.isArray(value) && Object.isFrozen(value)) {
       value = templateValues(args).join("");
-    }
-    else if (args.length > 1) {
+    } else if (args.length > 1) {
       value = args;
     }
-    props = { ...props, [prop]: value }
+    props = { ...props, [prop]: value };
     return elementBuilder({ props, prop: null });
-  }
-  function setPropsValues(props) {
+  };
+
+  const setPropsValues = (props) => {
     let { props: existingProps } = this.__element_info__;
-    props = { ...existingProps, ...props }
+    props = { ...existingProps, ...props };
     return elementBuilder({ props, prop: null });
-  }
-  function elementBuilder(propsInfo) {
-    let builder = new Proxy(() => { }, {
+  };
+
+  const elementBuilder = (propsInfo) => {
+    let builder = new Proxy(() => {}, {
       apply(target, thisArg, children) {
         let { props } = builder.__element_info__;
         if (typeof props.exec === "function") {
@@ -53,7 +56,7 @@ function elementBuilderBuilder(elementConstructor, element) {
           children = templateValues(children);
         }
         if (Array.isArray(props.children)) {
-          props.children.push(...children)
+          props.children.push(...children);
           children = props.children;
           delete props.children;
         }
@@ -72,51 +75,52 @@ function elementBuilderBuilder(elementConstructor, element) {
         }
         if (prop === "props") {
           return setPropsValues;
-        }
-        else if (typeof prop === "string") {
+        } else if (typeof prop === "string") {
           if (prop.endsWith("Value") && prop.length > 5) {
-            return target.__element_info__.props[prop.slice(0, -5)]
+            return target.__element_info__.props[prop.slice(0, -5)];
           }
           target.__element_info__.prop = prop;
           return setPropertyValue;
         }
-      }
-    })
+      },
+    });
     builder.__element_info__ = propsInfo;
     return builder;
-  }
+  };
+
   return elementBuilder({ props: {}, prop: null });
-}
+};
 
-
-function elementBuilders(elementConstructor, elements = []) {
+const elementBuilders = (elementConstructor, elements = []) => {
   if (typeof elementConstructor !== "function") {
-    throw Error("elementConstructor argument must be present and it must be a function.")
+    throw Error(
+      "elementConstructor argument must be present and it must be a function."
+    );
   }
   if (elements.length > 0) {
-    let builders = [];
+    const builders = [];
     for (const element of elements) {
       builders.push(elementBuilderBuilder(elementConstructor, element));
     }
     return builders;
   }
-  else {
-    return new Proxy(() => { }, {
-      get(target, prop) {
-        const result = target[prop];
-        if (typeof result !== "undefined") {
-          return result;
-        }
-        target[prop] = elementBuilderBuilder(elementConstructor, prop);
-        return target[prop];
+  return new Proxy(() => {}, {
+    get(target, prop) {
+      const result = target[prop];
+      if (typeof result !== "undefined") {
+        return result;
       }
-    });
-  }
-}
+      target[prop] = elementBuilderBuilder(elementConstructor, prop);
+      return target[prop];
+    },
+  });
+};
 
-if (document.currentScript !== null
-  && typeof document.currentScript !== "undefined") {
-  window.Webscript = { elementBuilders }
-}
-export default elementBuilders;
+const render = elementBuilders;
 
+module.exports = {
+  render,
+  html,
+  object,
+  svg,
+};

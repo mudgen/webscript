@@ -2,18 +2,21 @@
   "name": "webscript",
   "version": "0.0.6",
   "description": "HTML replacement.  Better Javascript syntax for creating web applications.",
-  "type": "module",
-  "main": "webscript.js",
   "directories": {
     "test": "test"
   },
+  "source": "src/webscript.js",
+  "main": "dist/webscript.js",
+  "module": "dist/webscript.module.js",
+  "unpkg": "dist/webscript.umd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "minifywebscript": "terser webscript.js --module -m reserved=['elementBuilders'] -o webscript.min.js",
-    "minifycreateelement": "terser createelement.js --module -m reserved=['createElement','createSVGElement'] -o createelement.min.js"
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "test": "ava"
   },
   "devDependencies": {
-    "terser": "^4.7.0"
+    "ava": "^3.8.2",
+    "microbundle": "^0.12.0"
   },
   "repository": {
     "type": "git",
