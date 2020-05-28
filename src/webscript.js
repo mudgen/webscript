@@ -117,10 +117,16 @@ const elementBuilders = (elementConstructor, elements = []) => {
 };
 
 const render = elementBuilders;
+const renderHtml = elementBuilders(html);
+const renderObject = elementBuilders(object);
+const renderSvg = elementBuilders(svg);
 
 module.exports = {
   render,
   html,
   object,
   svg,
+  renderHtml,
+  renderObject,
+  renderSvg,
 };

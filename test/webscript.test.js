@@ -2,9 +2,9 @@ const test = require("ava");
 const webscript = require("../src/webscript");
 
 test("that elements render", (t) => {
-  const { render, object } = webscript;
+  const { renderObject } = webscript;
 
-  const { div, p } = render(object);
+  const { div, p } = renderObject;
 
   const out = div(p("hello world"));
 

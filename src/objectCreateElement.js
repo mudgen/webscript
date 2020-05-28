@@ -7,7 +7,7 @@ const createElement = (tagName, props, ...children) => {
   element.children = [];
   element.value = "";
   element.append = (child) => {
-    if (typeof child === "string") {
+    if (typeof child === "string" || typeof child === "boolean") {
       element.value = child;
       return;
     }
