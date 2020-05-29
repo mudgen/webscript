@@ -1,6 +1,6 @@
 {
   "name": "webscript",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "HTML replacement.  Better Javascript syntax for creating web applications.",
   "type": "module",
   "main": "dist/webscript.js",
