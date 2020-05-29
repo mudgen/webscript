@@ -7,9 +7,6 @@
   "directories": {
     "test": "test"
   },
-  "files": [
-    "dist/*"
-  ],
   "scripts": {
     "build": "microbundle src/*.js"
   },
