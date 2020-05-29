@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">  
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Webscript Documentation</title>
   <meta name="description" content="Webscript Documentation">
@@ -21,6 +21,21 @@
 
     body {
       font-family: 'Inter var';
+    }
+
+    .h-hover a {
+      margin-left: -0.8em;
+      width: 0.9em;
+      position: absolute;
+      visibility: hidden;
+    }
+
+    .h-hover:hover a {
+      visibility: visible;
+    }
+
+    .h-hover:hover a:hover {
+      visibility: visible;
     }
   </style>
 </head>

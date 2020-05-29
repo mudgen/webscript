@@ -19,14 +19,20 @@ function contentValue(values) {
 
 h1 = h1.exec((builder, children) => {
   let content = contentValue(children);
-  let id = content.trim().replace(/\s+/g, "-");
-  return builder.id(id).class`text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200 leading-snug`(content)
+  let id = content.trim().replace(/\s+/g, "-").toLowerCase();
+  return builder.id(id).class`h-hover text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200 leading-snug`(
+    a.class`text-cool-gray-400`.href("#" + id)`#`,
+    content
+  )
 })
 
 h2 = h2.exec((builder, children) => {
   let content = contentValue(children);
-  let id = content.trim().replace(/\s+/g, "-");
-  return builder.id(id).class`text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(content)
+  let id = content.trim().replace(/\s+/g, "-").toLowerCase();
+  return builder.id(id).class`h-hover text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(
+    a.class`text-cool-gray-400`.href("#" + id)`#`,
+    content
+  )
 })
 
 h3 = h3.class`text-xl font-medium mt-10`;
@@ -75,7 +81,6 @@ const content =
       Use it to create web applications. It is like HTML but it is Javascript.
     `,
     orderedList(
-      "Webscript is an ES6 Module and uses ES6 features.",
       "It has zero dependencies.",
       "It is small. It is about 2KB."
     ),
@@ -114,9 +119,9 @@ const content =
     p`And this works too:`,
     javascriptCode`img.src("images/sample-1.jpg").alt("Sample Image")`,
     h2`Builder Pattern`,
-    p`The builder pattern is a way to build up an object step by step. Webscript uses the builder pattern to build the properties of an element and then create it.`,
+    p`The builder pattern is a way to build an object step by step. Webscript uses the builder pattern to build the properties of an element or component and then create it.`,
     p`
-      A Webscript object, such as ${code`img`} or ${code`div`}, is called an element builder or builder for short.
+      A Webscript object, such as ${code`img`} or ${code`div`}, is called a builder.
       Here is an example that shows how an element is built and created using an ${code`a`} builder.
     `,
     javascriptCode`a.href\`https://github.com/mudgen/webscript\`.target\`_blank\`("Webscript")`,
@@ -133,8 +138,12 @@ const content =
 
     h1`Installation`,
     shellCode`npm install webscript`,
-    p.class`py-4``Or use a CDN in an ES6 Module:`,
-    javascriptCode`import elementBuilders from 'https://cdn.jsdelivr.net/npm/webscript@1.0.0/webscript.min.js'`,
+    p.class`py-4``Or use a CDN:`,
+    javascriptCode`import builders from 'https://cdn.jsdelivr.net/npm/webscript@0.0.11/dist/webscript.esm.js'`,
+    p`Webscript is available in the following Javascript formats: ES6, ES5, CommonJS and UMD.`,
+    // p`Webscript uses 
+    //   ${a.href`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy`.target`_blank``Javascript proxies`},
+    //   so Internet Explorer 11 is not supported.`,
     h1`Why Webscript?`,
     orderedList(
       `Webscript is much more capable than HTML.`,
@@ -147,9 +156,9 @@ const content =
     ),
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
     p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
-    h1`Webscript Element Builders`,
+    h1`Webscript Builders`,
     p`
-      Webscript element builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
+      Webscript builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
       that are called to build up the properties of an element. The actual element is created by calling the builder as
       a function. In the example ${code`img.src\`file.png\`()`} the ${code`src`} method call sets the 'src' property.
       And ${code`()`} causes the img builder to be executed as a function which creates and returns the img element.
@@ -159,16 +168,17 @@ const content =
       actually not necessary to execute builders, using ${code`()`}, that have no children because the containing ${code`div`}
       or builder will execute it for you. So in the case of ${code`img`} it could just be written like this: ${code`img.src\`file.png\``}
     `,
-    p`Element builders are created like this:`,
+    p`Builders are created like this:`,
     javascriptCode
-      `import elementBuilders from './webscript.js'  
+      `import builders from 'webscript'
+import createElement from 'webscript/dist/createDOMElement.js'  
 
-const { body, div, p, span, img } = elementBuilders(createElement);`,
+const { body, div, p, span, img } = builders(createElement);`,
     p`${code`createElement`} is the actual function that creates the elements. A builder executes  ${code`createElement`} internally when the builder is called as a function.`,
     p`The ${code`createElement`} function is written by you or it is supplied by a library or framework.`,
     p`
      So a builder builds up the properties of an element or component and then converts it into an element by calling the ${code`createElement`} function that
-     was passed into Webscript's ${code`elementBuilders`} function.`,
+     was passed into Webscript's ${code`builders`} function.`,
     p`Generally the ${code`createElement`} function has this function signature: ${code`createElement(type, props, ...children)`}.`,
     p`
      The types of these parameters depend on the implementation of ${code`createElement`} that is used. Webscript builders will pass an object of properties and values as the
@@ -191,10 +201,10 @@ Below is your ${code`app.js`} file. It uses ${a.href`https://tailwindcss.com/`.t
 Note that other CSS libraries can be used with Webscript.
     `,
     javascriptCode
-      `import elementBuilders from './webscript.js'
-import { createElement } from './createelement.js'
+      `import builders from 'webscript'
+import { createElement } from 'webscript/dist/createDOMElement.js'
 
-const { body, div, p, span, img } = elementBuilders(createElement);
+const { body, div, p, span, img } = builders(createElement);
 
 const tag = span.class\`inline-block bg-gray-200 rounded-full px-3 py-1 mr-2\`;
 
@@ -215,7 +225,7 @@ document.body = app;`,
     p`Something to note: There is no HTML templating here. ${code`body`}, ${code`div`}, ${code`img`}, ${code`p`}, ${code`span`}
     are Javascript objects with methods that are called with Javascript's tagged template literal syntax.`,
     p`
-    ${code`tag`} is an object, or element builder, that has been created with the 'class' property preset with some classes. This 
+    ${code`tag`} is an object, or builder, that has been created with the 'class' property preset with some classes. This 
     creates one place where the display of tags can be modified. This is a good example of code reuse with Webscript.
     `,
 
@@ -232,7 +242,7 @@ document.body = app;`,
     p`Webscript was designed to be used in existing libraries and frameworks.`,
     p`
       Webscript interoperates with libraries and frameworks by taking a function from them usually called ${code`createElement`} that is used to create the elements. 
-      Webscript's ${code`elementBuilders`} function is called with the ${code`createElement`} function from the library/framework.
+      Webscript's ${code`builders`} function is called with the ${code`createElement`} function from the library/framework.
     `,
     p`
       The ${code`createElement`} function generally has the following parameters: ${code`components, properties, ...children`}. 
@@ -246,14 +256,14 @@ document.body = app;`,
     p`
       Here is an example of using Webscript in React.
     `,
-    h1`React Example`,
+    h2`React Example`,
     javascriptCode
       `import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import elementBuilders from 'webscript'
+import builders from 'webscript'
 
-const { div, header, p, a, img, code } = elementBuilders(React.createElement);
+const { div, header, p, a, img, code } = builders(React.createElement);
 
 function App() {
   return (
@@ -273,16 +283,16 @@ function App() {
   `,
     p`
     However class-based React elements are not functions. They can still be used in Webscript by passing them in an array to 
-    ${code`elementBuilders`} in order to convert them into functions. In the example below the ${code`StrictMode`} component is converted to a function and used. 
+    ${code`builders`} in order to convert them into functions. In the example below the ${code`StrictMode`} component is converted to a function and used. 
     The ${code`App`} React Hook we created in our last example is used directly without any conversion.
   `,
     javascriptCode
       `import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import elementBuilders from 'webscript';
+import builders from 'webscript';
 
-const [StrictMode] = elementBuilders(React.createElement, [React.StrictMode]);
+const [StrictMode] = builders(React.createElement, [React.StrictMode]);
 
 ReactDOM.render(
   StrictMode(
@@ -292,14 +302,21 @@ ReactDOM.render(
 );`,
     h1`Without a Library`,
     p`
-    The Webscript project provides a simple ${code`createElement`} function that creates vanilla DOM elements. It also provides 
-    a ${code`createSVGElement`} function that create SVG elements.
-    `,
+    The Webscript project provides three simple ${code`createElement`} functions:`,
+    orderedList(
+      span`${code`createDOMElement`} creates vanilla DOM elements.`,
+      span`${code`createSVGElement`} creates vanilla SVG elements.`,
+      span`${code`createObjectElement`} creates vanilla Javascript objects.`,
+    ),
     javascriptCode
-      `import elementBuilders from './webscript.js'
-import { createElement, createSVGElement } from './createelement.js'
-const { body, div, p } = elementBuilders(createElement);
-const { svg } = elementBuilders(createSVGElement);
+      `import builders from 'webscript'
+import { createDOMElement } from 'webscript/dist/createDOMElement.js'
+import { createSVGElement } from 'webscript/dist/createSVGElement.js'
+import { createObjectElement } from 'webscript/dist/createObjectElement.js'
+
+const { body, div, p } = builders(createElement);
+const { svg } = builders(createSVGElement);
+const { objects } = builders(createObjectElement);
 
 const myApp = div(p("hello world"))
 document.body = body(myApp);`,
