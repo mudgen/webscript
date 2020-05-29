@@ -1,7 +1,9 @@
 const CodeMirror = window.CodeMirror;
-import builders from '../dist/webscript.modern.js';
-import createElement from '../dist/createDOMElement.modern.js'
+import builders from '../dist/webscript.esm.js';
+import createElement from '../dist/createDOMElement.esm.js';
+import createSVGElement from '../dist/createSVGElement.esm.js';
 let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span } = builders(createElement);
+let { svg, path, title } = builders(createSVGElement);
 
 function contentValue(values) {
   const [first] = values;
@@ -16,17 +18,19 @@ function contentValue(values) {
   return values.join("");
 }
 
+let navItems = [];
 
-h1 = h1.exec((builder, children) => {
+h2 = h2.exec((builder, children) => {
   let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-").toLowerCase();
+  navItems.push([id, content])
   return builder.id(id).class`h-hover text-3xl border-b-2 font-medium py-3 my-4 border-cool-gray-200 leading-snug`(
     a.class`text-cool-gray-400`.href("#" + id)`#`,
     content
   )
 })
 
-h2 = h2.exec((builder, children) => {
+h3 = h3.exec((builder, children) => {
   let content = contentValue(children);
   let id = content.trim().replace(/\s+/g, "-").toLowerCase();
   return builder.id(id).class`h-hover text-2xl border-b-2 font-medium py-3 my-4 border-cool-gray-200`(
@@ -75,7 +79,7 @@ code = code.class`text-lg bg-cool-gray-200 px-1 rounded`;
 
 const content =
   div.class`text-lg leading-relaxed pb-2 mb-6`(
-    h1`What is Webscript?`,
+    h2`What is Webscript?`,
     p`
       Webscript is an HTML-like Javascript syntax for creating, composing and manipulating DOM elements. 
       Use it to create web applications. It is like HTML but it is Javascript.
@@ -84,7 +88,7 @@ const content =
       "It has zero dependencies.",
       "It is small. It is about 2KB."
     ),
-    h1`Introduction`,
+    h2`Introduction`,
     p`Let's compare HTML to Webscript. Here is some HTML:`,
     htmlCode
       `<div class="card-image">
@@ -104,7 +108,7 @@ const content =
       In the above example ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects. And ${code`class`},
       ${code`src`} and ${code`alt`} are Javascript methods.
     `,
-    h2`Tagged Template Literals`,
+    h3`Tagged Template Literals`,
     p`
       Webscript uses tagged template literals which is the syntax above with the backticks. For example ${code`src\`images/sample-1.jpg\``} is      
       a tagged template literal.
@@ -118,7 +122,7 @@ const content =
     javascriptCode`img.src\`images/sample-1.jpg\`.alt\`Sample Image\``,
     p`And this works too:`,
     javascriptCode`img.src("images/sample-1.jpg").alt("Sample Image")`,
-    h2`Builder Pattern`,
+    h3`Builder Pattern`,
     p`The builder pattern is a way to build an object step by step. Webscript uses the builder pattern to build the properties of an element or component and then create it.`,
     p`
       A Webscript object, such as ${code`img`} or ${code`div`}, is called a builder.
@@ -136,7 +140,7 @@ const content =
     ),
     p("Here is the resulting link created by the ", code`a`, " builder: ", a.href`https://github.com/mudgen/webscript`.target`_blank`("Webscript")),
 
-    h1`Installation`,
+    h2`Installation`,
     shellCode`npm install webscript`,
     p.class`py-4``Or use a CDN:`,
     javascriptCode`import builders from 'https://cdn.jsdelivr.net/npm/webscript@0.0.11/dist/webscript.esm.js'`,
@@ -144,7 +148,7 @@ const content =
     // p`Webscript uses 
     //   ${a.href`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy`.target`_blank``Javascript proxies`},
     //   so Internet Explorer 11 is not supported.`,
-    h1`Why Webscript?`,
+    h2`Why Webscript?`,
     orderedList(
       `Webscript is much more capable than HTML.`,
       `Webscript is a nicer syntax than Hyperscript.`,
@@ -156,7 +160,7 @@ const content =
     ),
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
     p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
-    h1`Webscript Builders`,
+    h2`Webscript Builders`,
     p`
       Webscript builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
       that are called to build up the properties of an element. The actual element is created by calling the builder as
@@ -190,7 +194,7 @@ const { body, div, p, span, img } = builders(createElement);`,
       SVG elements in the browser. These can be found in the ${code`createelement.js`} Javascript module. 
     `,
 
-    h1`Usage Example`,
+    h2`Usage Example`,
     p`In your ${code`index.html`} file: `,
     htmlCode
       `<body>
@@ -233,12 +237,12 @@ document.body = app;`,
     The above is Javascript objects, strings, variables and functions.`,
     p`Here is the result of the above code:`,
     img.src`example.png`.alt`Result of example code`,
-    h1`Convert HTML to Webscript`,
+    h2`Convert HTML to Webscript`,
     p`HTML can be converted to Webscript using the 
       ${a.href`https://mudgen.github.io/webscript/html2webscript/`.target`_blank``html2webscript`}  web application.`,
     p`It is also useful to see how Webscript compares to HTML. In the application click on the "Insert Random Example" button to see examples of Webscript.`,
 
-    h1`Use it in React, Vue and other libraries and frameworks!`,
+    h2`Use it in React, Vue and other Libraries!`,
     p`Webscript was designed to be used in existing libraries and frameworks.`,
     p`
       Webscript interoperates with libraries and frameworks by taking a function from them usually called ${code`createElement`} that is used to create the elements. 
@@ -256,7 +260,7 @@ document.body = app;`,
     p`
       Here is an example of using Webscript in React.
     `,
-    h2`React Example`,
+    h3`React Example`,
     javascriptCode
       `import React from 'react';
 import logo from './logo.svg';
@@ -300,7 +304,7 @@ ReactDOM.render(
   ),
   document.getElementById('root')
 );`,
-    h1`Without a Library`,
+    h2`Without a Library`,
     p`
     The Webscript project provides three simple ${code`createElement`} functions:`,
     orderedList(
@@ -325,8 +329,33 @@ document.body = body(myApp);`,
 
 const contentNav =
   div.class`fixed inset-0 bg-cool-gray-100 z-0`(
-    div.class`max-w-7xl mx-auto mt-16`(
-      div``
+    div.class`max-w-7xl mx-auto`(
+      h1.class`pl-3 mt-8 mb-3 text-3xl border-b-2 w-56 font-medium pb-1 border-cool-gray-300`(
+        a.class`text-cool-gray-800`.href`#``Webscript`
+      ),
+      nav(
+        div.class`w-64`(
+          navItems.map((item) => {
+            return a.class`mt-1 group flex items-center px-3 py-3 leading-6 font-medium text-cool-gray-600 rounded-md hover:text-cool-gray-800 hover:bg-cool-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150`
+              .href("#" + item[0])
+              (item[1])
+          })
+        ),
+        div.class`mt-4 flex items-center pl-3`(
+          a.class`text-cool-gray-500 hover:text-cool-gray-800`.alt`Github`.href`https://github.com/mudgen/webscript`.target`_blank`(
+            svg.class`w-10 h-10 fill-current`.role`img`.viewBox`0 0 24 24`(
+              title`GitHub`,
+              path.d`M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12`
+            )
+          ),
+          a.class`ml-4 text-cool-gray-500 hover:text-cool-gray-800`.alt`Github`.href`https://twitter.com/mudgen`.target`_blank`(
+            svg.class`w-10 h-10 fill-current`.role`img`.viewBox`0 0 24 24`(
+              title`Twitter`,
+              path.d`M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z`
+            )
+          )
+        )
+      )
     )
   )
 
@@ -334,9 +363,7 @@ let app =
   body(
     contentNav,
     div.id`top`.class`borcder-b bordcer-gray-300 relative bg-white z-20`(
-      div.class`max-w-5xl mx-auto h-16 flex items-center divicde-x divide-grcay-400`(
-        h1.class`font-bold text-2xl``Webscript`,
-      )
+      //div.class`max-w-5xl mx-auto h-1 flex items-center divicde-x divide-grcay-400`(       //h1.class`font-bold text-2xl``Webscript`,      )
     ),
     div.class`relative max-w-3xl mx-auto bg-white z-10 shadow mt-3 px-10 rounded`(
       content
