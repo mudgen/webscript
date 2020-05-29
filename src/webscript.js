@@ -1,4 +1,3 @@
-
 function templateValues(args) {
   const [strings, ...templateArgs] = args;
   const result = [];
@@ -8,20 +7,20 @@ function templateValues(args) {
     }
     let arg = templateArgs[index];
     if (typeof arg !== "undefined") {
-      result.push(arg)
+      result.push(arg);
     }
   }
-  return result
+  return result;
 }
 
-function elementBuilderBuilder(elementConstructor, element) {
+function createInitialBuilder(constructor, type) {
   function setPropertyValue(...args) {
     let [value] = args;
     let { props, prop } = this.__element_info__;
     if (typeof value === "undefined") {
-      props = { ...props }
+      props = { ...props };
       delete props[prop];
-      return elementBuilder({ props, prop: null });
+      return createBuilder({ props, prop: null });
     }
     else if (Array.isArray(value) && Object.isFrozen(value)) {
       value = templateValues(args).join("");
@@ -29,15 +28,15 @@ function elementBuilderBuilder(elementConstructor, element) {
     else if (args.length > 1) {
       value = args;
     }
-    props = { ...props, [prop]: value }
-    return elementBuilder({ props, prop: null });
+    props = { ...props, [prop]: value };
+    return createBuilder({ props, prop: null });
   }
   function setPropsValues(props) {
     let { props: existingProps } = this.__element_info__;
-    props = { ...existingProps, ...props }
-    return elementBuilder({ props, prop: null });
+    props = { ...existingProps, ...props };
+    return createBuilder({ props, prop: null });
   }
-  function elementBuilder(propsInfo) {
+  function createBuilder(propsInfo) {
     let builder = new Proxy(() => { }, {
       apply(target, thisArg, children) {
         let { props } = builder.__element_info__;
@@ -63,7 +62,7 @@ function elementBuilderBuilder(elementConstructor, element) {
             children[i] = arg();
           }
         }
-        return elementConstructor(element, props, ...children);
+        return constructor(type, props, ...children);
       },
       get(target, prop) {
         const result = target[prop];
@@ -75,7 +74,7 @@ function elementBuilderBuilder(elementConstructor, element) {
         }
         else if (typeof prop === "string") {
           if (prop.endsWith("Value") && prop.length > 5) {
-            return target.__element_info__.props[prop.slice(0, -5)]
+            return target.__element_info__.props[prop.slice(0, -5)];
           }
           target.__element_info__.prop = prop;
           return setPropertyValue;
@@ -85,18 +84,18 @@ function elementBuilderBuilder(elementConstructor, element) {
     builder.__element_info__ = propsInfo;
     return builder;
   }
-  return elementBuilder({ props: {}, prop: null });
+  return createBuilder({ props: {}, prop: null });
 }
 
 
-function elementBuilders(elementConstructor, elements = []) {
-  if (typeof elementConstructor !== "function") {
-    throw Error("elementConstructor argument must be present and it must be a function.")
+function builders(constructor, types = []) {
+  if (typeof constructor !== "function") {
+    throw Error("elementConstructor argument must be present and it must be a function.");
   }
-  if (elements.length > 0) {
+  if (types.length > 0) {
     let builders = [];
-    for (const element of elements) {
-      builders.push(elementBuilderBuilder(elementConstructor, element));
+    for (const element of types) {
+      builders.push(createInitialBuilder(constructor, element));
     }
     return builders;
   }
@@ -107,16 +106,11 @@ function elementBuilders(elementConstructor, elements = []) {
         if (typeof result !== "undefined") {
           return result;
         }
-        target[prop] = elementBuilderBuilder(elementConstructor, prop);
+        target[prop] = createInitialBuilder(constructor, prop);
         return target[prop];
       }
     });
   }
 }
 
-if (document.currentScript !== null
-  && typeof document.currentScript !== "undefined") {
-  window.Webscript = { elementBuilders }
-}
-export default elementBuilders;
-
+export default builders;

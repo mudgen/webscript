@@ -138,7 +138,7 @@ function addChild(element, child) {
  * @param {string} tagName
  * @param {any[]} args
  */
-export function constructElement(tagName, ...args) {
+export function createElement(tagName, ...args) {
 
   tagName = tagName.toLowerCase();
   /**

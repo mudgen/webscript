@@ -1,7 +1,7 @@
 const CodeMirror = window.CodeMirror;
-import elementBuilders from '../webscript.js';
-import { createElement } from '../createelement.js'
-let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span } = elementBuilders(createElement);
+import builders from '../dist/webscript.modern.js';
+import createElement from '../dist/createDOMElement.modern.js'
+let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span } = builders(createElement);
 
 function contentValue(values) {
   const [first] = values;
@@ -142,7 +142,7 @@ const content =
       `Webscript is more flexible and capable than HTML templating languages.`,
       `Webscript works really well with Javasacript because Webscript is Javascript.`,
       `No need for a compiler or special tooling.`,
-      `No extra build step.`,
+      `No build step.`,
       `Works with existing Javascript user-interface libraries.`
     ),
     p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
@@ -152,12 +152,12 @@ const content =
       Webscript element builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
       that are called to build up the properties of an element. The actual element is created by calling the builder as
       a function. In the example ${code`img.src\`file.png\`()`} the ${code`src`} method call sets the 'src' property.
-      And ${code`()`} causes the img builder to be executed as a function which creates the img element.
+      And ${code`()`} causes the img builder to be executed as a function which creates and returns the img element.
       `,
     p`
       Note that it is
       actually not necessary to execute builders, using ${code`()`}, that have no children because the containing ${code`div`}
-      or builder will execute it for you. So in the case of ${code`img`} it could just be written just like this: ${code`img.src\`file.png\``}
+      or builder will execute it for you. So in the case of ${code`img`} it could just be written like this: ${code`img.src\`file.png\``}
     `,
     p`Element builders are created like this:`,
     javascriptCode

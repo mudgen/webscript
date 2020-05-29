@@ -1,8 +1,6 @@
-// @ts-check
-/* eslint-disable no-unexpected-multiline */
 
-import { constructElement } from './libs/viv.js';
-import elementBuilders from '../webscript.js'
+import { createElement } from './libs/viv.js';
+import builders from '../dist/webscript.modern.js'
 import examples from './examples.js';
 //import minify = require('html-minifier-terser');
 
@@ -15,7 +13,7 @@ const htmlMinify = window.require('html-minifier').minify;
 const Terser = window.Terser;
 
 // eslint-disable-next-line no-unused-vars
-const { svg, path, title, body, div, p, label, h1, h2, h3, span, button, input } = elementBuilders(constructElement);
+const { svg, path, title, body, div, p, label, h1, h2, h3, span, button, input } = builders(createElement);
 
 
 // @ts-ignore
@@ -247,7 +245,7 @@ const app =
 //document.getElementById("root").replaceWith(app);
 document.body = app;
 
-const codeMirror = CodeMirror(document.getElementById("htmlEditor"), { mode: {name: "xml", htmlMode: true}, placeholder: "Type or paste HTML..." });
+const codeMirror = CodeMirror(document.getElementById("htmlEditor"), { mode: { name: "xml", htmlMode: true }, placeholder: "Type or paste HTML..." });
 const displayCodeMirror = CodeMirror(document.getElementById("jsEditor"), { mode: "javascript", addModeClass: true, flattenSpans: false });
 
 let output = []
