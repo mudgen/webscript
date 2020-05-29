@@ -42,6 +42,8 @@ const createElement = (tagName, props, ...children) => {
     if (
       typeof child === "string" ||
       typeof child === "boolean" ||
+      typeof child === "number" ||
+      typeof child === "bigint" ||
       (typeof child === "object" && !child.__isElement)
     ) {
       element.value = child;
