@@ -378,7 +378,7 @@ const contentNav =
       )
     ),
     div.class`pl-3 mt-8 text-base font-medium text-cool-gray-800``Powered by Webscript`,
-
+    
 
   )
 
