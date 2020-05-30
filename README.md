@@ -5,6 +5,12 @@ Webscript is an HTML-like Javascript syntax for defining, creating, composing an
 1. It has zero dependencies.
 2. It is small. It's size is about 2KB.
 
+Webscript:
+
+1. Replaces JSX in React.  
+2. Replaces HTML templating languages.
+3. Replaces HTML in Javascript applications.
+
 ## Quick Example
 
 HTML:

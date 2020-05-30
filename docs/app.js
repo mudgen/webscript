@@ -88,6 +88,12 @@ const content =
       "It has zero dependencies.",
       "It is small. It is about 2KB."
     ),
+    p.class`mt-6``Webscript:`,
+    orderedList(
+      "Replaces JSX in React and other libraries.",
+      "Replaces HTML templating languages.",
+      "Replaces HTML in Javascript applications."
+    ),
     h2`Introduction`,
     p`Let's compare HTML to Webscript. Here is some HTML:`,
     htmlCode
@@ -378,7 +384,7 @@ const contentNav =
       )
     ),
     div.class`pl-3 mt-8 text-base font-medium text-cool-gray-800``Powered by Webscript`,
-    
+
 
   )
 
