@@ -10,6 +10,7 @@ Webscript:
 1. Replaces JSX in React.  
 2. Replaces HTML templating languages.
 3. Replaces HTML in Javascript applications.
+4. Replaces HTML in your Javascript library.
 
 ## Quick Example
 
