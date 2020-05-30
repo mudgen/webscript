@@ -325,7 +325,7 @@ import { createDOMElement } from 'webscript/dist/createDOMElement.js'
 import { createSVGElement } from 'webscript/dist/createSVGElement.js'
 import { createObjectElement } from 'webscript/dist/createObjectElement.js'
 
-const { body, div, p } = builders(createElement);
+const { body, div, p } = builders(createDOMElement);
 const { svg } = builders(createSVGElement);
 const { objects } = builders(createObjectElement);
 
