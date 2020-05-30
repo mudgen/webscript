@@ -92,7 +92,8 @@ const content =
     orderedList(
       "Replaces JSX in React and other libraries.",
       "Replaces HTML templating languages.",
-      "Replaces HTML in Javascript applications."
+      "Replaces HTML in Javascript applications.",
+      "Replaces HTML in your Javascript library."
     ),
     h2`Introduction`,
     p`Let's compare HTML to Webscript. Here is some HTML:`,
