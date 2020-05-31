@@ -13,6 +13,8 @@ function templateValues(args) {
   return result;
 }
 
+let interpunct = new RegExp("·","g");
+
 function createInitialBuilder(constructor, type) {
   function setPropertyValue(...args) {
     let [value] = args;
@@ -73,6 +75,9 @@ function createInitialBuilder(constructor, type) {
           return setPropsValues;
         }
         else if (typeof prop === "string") {
+          if(prop.indexOf("·") !== -1) {
+            prop = prop.replace(interpunct, "-");
+          }
           if (prop.endsWith("Value") && prop.length > 5) {
             return target.__element_info__.props[prop.slice(0, -5)];
           }

@@ -346,6 +346,8 @@ function out(o, indent) {
   }
 }
 
+let hyphen = new RegExp("-","g");
+
 function camelCase(hyphenText) {
   return hyphenText.split("-")
     .map((text, index) => {
@@ -375,7 +377,7 @@ function traverse(element) {
     else {
       let name = a.name;
       if (name.indexOf('-') > -1) {
-        name = camelCase(name);
+        name = name.replace(hyphen, "·");
       }
       o.attrs.push(`.${name}\`${a.value}\``);
     }

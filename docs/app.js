@@ -366,21 +366,22 @@ const contentNav =
     ),
     div.class`mt-6 pl-3`(
       /*  Place this tag where you want the button to render. */
-      a.class`github-button`.href`https://github.com/mudgen/webscript`
-      ["data-size"]`large`
-      ["data-show-count"]`true`
-      ["aria-label"]`Star Webscript on GitHub``Star`,
+      a.class`github-button`
+        .href`https://github.com/mudgen/webscript`
+        .data·size`large`
+        .data·show·count`true`
+        .aria·label`Star Webscript on GitHub``Star`,
       div.class`mt-2`(
         a.class`github-button`.href`https://github.com/sponsors/mudgen`
-        ["data-size"]`large`
-        ["data-icon"]`octicon-heart`
-        ["ariaLabel"]`Sponsor @ntkme on GitHub``Sponsor`
+        .data·size`large`
+        .data·icon`octicon-heart`
+        .aria·label`Sponsor @mudgen on GitHub``Sponsor`
       ),
       div.class`mt-2`(
         a.class`twitter-follow-button`.href`https://twitter.com/mudgen?ref_src=twsrc%5Etfw`
-        ["data-size"]`large`
-        ["data-show-count"]`false`
-        ["data-show-screen-name"]`false`
+        .data·size`large`
+        .data·show·count`false`
+        .data·show·screen·name`false`
           `Follow @mudgen`
       )
     ),
