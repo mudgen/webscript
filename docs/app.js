@@ -1,8 +1,9 @@
 const CodeMirror = window.CodeMirror;
 import builders from '../dist/webscript.esm.js';
+//import builders from '../src/webscript.js';
 import createElement from '../dist/createDOMElement.esm.js';
 import createSVGElement from '../dist/createSVGElement.esm.js';
-let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span } = builders(createElement);
+let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span, button } = builders(createElement);
 let { svg, path, title } = builders(createSVGElement);
 
 function contentValue(values) {
@@ -22,19 +23,21 @@ let navItems = [];
 
 h2 = h2.exec((builder, children) => {
   let content = contentValue(children);
-  let id = content.trim().replace(/\s+/g, "-").toLowerCase();
-  navItems.push([id, content])
-  return builder.id(id).class`h-hover text-2xl lg:text-3xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200 leading-snug`(
-    a.class`text-cool-gray-400`.href("#" + id)`#`,
+  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
+  navItems.push([hash, content])
+  return builder.class`h-hover relative text-2xl lg:text-3xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200 leading-snug`(
+    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-5`.href("#" + hash)`#`,
     content
   )
 })
 
 h3 = h3.exec((builder, children) => {
   let content = contentValue(children);
-  let id = content.trim().replace(/\s+/g, "-").toLowerCase();
-  return builder.id(id).class`h-hover text-xl lg:text-2xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200`(
-    a.class`text-cool-gray-400`.href("#" + id)`#`,
+  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
+  return builder.class`h-hover relative text-xl lg:text-2xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200`(
+    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-4 `.href("#" + hash)`#`,
     content
   )
 })
@@ -334,15 +337,50 @@ document.body = body(myApp);`,
     p`The above example creates a simple webpage that says, "hello world".`,
   )
 
+function turnOffMenu() {
+  let menuButton = document.getElementById("menu-button");
+  menuButton.firstElementChild.classList.remove("hidden")
+  menuButton.firstElementChild.nextSibling.classList.add("hidden")
+  document.getElementById("nav").classList.add("hidden");
+}
+
+function turnOnMenu() {
+  console.log("turning on");
+  let menuButton = document.getElementById("menu-button");
+  menuButton.firstElementChild.classList.add("hidden")
+  menuButton.firstElementChild.nextSibling.classList.remove("hidden")
+  document.getElementById("nav").classList.remove("hidden");
+
+}
+
+function toggleMenu() {
+  let menuButton = document.getElementById("menu-button");
+  if (menuButton.firstElementChild.nextSibling.classList.contains("hidden")) {
+    turnOnMenu();
+  }
+  else {
+    turnOffMenu();
+  }
+}
+
 const contentNav =
-  div(
-    div.class`lg:hidden fixed top-0 z-20 border-b border-cool-gray-300 w-full`(
-      h1.class`pl-3 text-3xl font-medium pb-1 border-cool-gray-300`(
+  div.class``(
+    div.class`lg:hidden fixed top-0 z-20 bg-cool-gray-200 w-full flex items-center justify-between`(
+      h1.class`pl-3 text-3xl font-medium pb-1`(
         a.class`text-cool-gray-800`.href`#``Webscript`
-      )
+      ),
+      button.id`menu-button`.class`inline-flex items-center justify-center p-2 mr-1 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out`
+        .onclick(toggleMenu)(
+          /*  Menu open: "hidden", Menu closed: "block" */
+          svg.class`block h-6 w-6`.stroke`currentColor`.fill`none`.viewBox`0 0 24 24`(
+            path.stroke·linecap`round`.stroke·linejoin`round`.stroke·width`2`.d`M4 6h16M4 12h16M4 18h16`),
+          /*  Menu open: "block", Menu closed: "hidden" */
+          svg.class`hidden h-6 w-6`.stroke`currentColor`.fill`none`.viewBox`0 0 24 24`(
+            path.stroke·linecap`round`.stroke·linejoin`round`.stroke·width`2`.d`M6 18L18 6M6 6l12 12`)
+        )
 
     ),
-    div.class`hidsden fixed z-10 inset-y-0 mt-12 lg:mt-8 overflow-y-auto bg-cool-gray-100 lg:bg-transparent`(
+    div.id`nav`.class`hidden lg:block fixed z-10 inset-y-0 mt-12 lg:mt-8 overflow-y-auto bg-cool-gray-100 lg:bg-transparent w-full lg:w-auto`(
 
       h1.class`hidden lg:block mr-4 pl-3 mb-3 text-3xl border-b-2 font-medium pb-1 border-cool-gray-300`(
         a.class`text-cool-gray-800`.href`#``Webscript`
@@ -352,10 +390,11 @@ const contentNav =
         navItems.map((item) => {
           return a.class`mt-1 group flex items-center px-3 py-3 leading-6 font-medium text-cool-gray-600 rounded-md hover:text-cool-gray-800 hover:bg-cool-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150`
             .href("#" + item[0])
+            .onclick(turnOffMenu)
             (item[1])
         })
       ),
-      h1.class`pl-3 mt-6 text-2xl font-medium text-cool-gray-800``Project`,
+      h1.class`pl-3 mt-3 lg:mt-6 text-2xl font-medium text-cool-gray-800``Project`,
       div.class`mt-4 flex items-center pl-3`(
         a.class`text-cool-gray-500 hover:text-cool-gray-800`.alt`Github`.href`https://github.com/mudgen/webscript`.target`_blank`(
           svg.class`w-10 h-10 fill-current`.role`img`.viewBox`0 0 24 24`(
@@ -391,16 +430,16 @@ const contentNav =
             `Follow @mudgen`
         )
       ),
-      div.class`pl-3 mt-8 text-base font-medium text-cool-gray-800``Powered by Webscript`,
+      div.class`pl-3 mt-6 lg:mt-8 pb-4 text-base font-medium text-cool-gray-800``Powered by Webscript`,
     )
   )
 
 let app =
   body.class`bg-cool-gray-100 max-w-2xl lg:max-w-5xl mx-auto lg:flex`(
-    div.class`hidden lg:block lg:flex-1`(
+    div.class`lg:flex-1`(
       contentNav,
     ),
-    div.class`bg-white lg:shadow px-3 sm:px-10 lg:rounded lg:max-w-3xl max-w-2xl lg:text-lg leading-relaxed lg:mt-3 pb-2`(
+    div.class`bg-white lg:shadow px-4 sm:px-10 lg:rounded lg:max-w-3xl max-w-2xl lg:text-lg leading-relaxed mt-12 lg:mt-3 pb-2`(
       content
     )
   );

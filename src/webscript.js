@@ -13,7 +13,7 @@ function templateValues(args) {
   return result;
 }
 
-let interpunct = new RegExp("·","g");
+let interpunct = new RegExp("·", "g");
 
 function createInitialBuilder(constructor, type) {
   function setPropertyValue(...args) {
@@ -67,15 +67,14 @@ function createInitialBuilder(constructor, type) {
         return constructor(type, props, ...children);
       },
       get(target, prop) {
-        const result = target[prop];
-        if (typeof result !== "undefined") {
-          return result;
-        }
         if (prop === "props") {
           return setPropsValues;
         }
+        else if (prop === "__element_info__") {          
+          return target[prop]
+        }
         else if (typeof prop === "string") {
-          if(prop.indexOf("·") !== -1) {
+          if (prop.indexOf("·") !== -1) {
             prop = prop.replace(interpunct, "-");
           }
           if (prop.endsWith("Value") && prop.length > 5) {
