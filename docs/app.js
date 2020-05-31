@@ -338,6 +338,7 @@ document.body = body(myApp);`,
   )
 
 function turnOffMenu() {
+  content.classList.remove("hidden")
   let menuButton = document.getElementById("menu-button");
   menuButton.firstElementChild.classList.remove("hidden")
   menuButton.firstElementChild.nextSibling.classList.add("hidden")
@@ -345,11 +346,12 @@ function turnOffMenu() {
 }
 
 function turnOnMenu() {
-  console.log("turning on");
+  content.classList.add("hidden")
   let menuButton = document.getElementById("menu-button");
   menuButton.firstElementChild.classList.add("hidden")
   menuButton.firstElementChild.nextSibling.classList.remove("hidden")
   document.getElementById("nav").classList.remove("hidden");
+
 
 }
 
@@ -365,9 +367,9 @@ function toggleMenu() {
 
 const contentNav =
   div.class``(
-    div.class`lg:hidden fixed top-0 z-20 bg-cool-gray-200 w-full flex items-center justify-between`(
-      h1.class`pl-3 text-3xl font-medium pb-1`(
-        a.class`text-cool-gray-800`.href`#``Webscript`
+    div.class`lg:hidden fixed top-0 z-20 bg-cool-gray-200 w-full max-w-2xl flex items-center justify-between`(
+      h1.class`pl-3 sm:pl-10 text-3xl font-medium pb-1`(
+        a.class`text-cool-gray-800`.href`#`.onclick(turnOffMenu)`Webscript`
       ),
       button.id`menu-button`.class`inline-flex items-center justify-center p-2 mr-1 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out`
         .onclick(toggleMenu)(
