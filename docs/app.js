@@ -293,12 +293,12 @@ function App() {
          ))))
 }`,
     p`
-    A nice thing about React Hooks is that they are functions and so can be used directly within Webscript.
+    React function components are functions so they can be used directly within Webscript.
   `,
     p`
-    However class-based React elements are not functions. They can still be used in Webscript by passing them in an array to 
+    However class-based React components are not functions. They can still be used in Webscript by passing them in an array to 
     ${code`builders`} in order to convert them into functions. In the example below the ${code`StrictMode`} component is converted to a function and used. 
-    The ${code`App`} React Hook we created in our last example is used directly without any conversion.
+    The ${code`App`} function component we created in our last example is used directly without any conversion.
   `,
     javascriptCode
       `import React from 'react';
