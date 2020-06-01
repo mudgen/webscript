@@ -6,11 +6,13 @@ function addChild(element, child) {
     child instanceof RegExp
   ) {
     element.append(String(child));
-  } else if (Array.isArray(child)) {
+  }
+  else if (Array.isArray(child)) {
     for (const childChild of child) {
       addChild(element, childChild);
     }
-  } else if (
+  }
+  else if (
     typeof child !== "undefined" &&
     child !== null &&
     typeof child !== "boolean"

@@ -87,10 +87,9 @@ const content =
       Webscript is an HTML-like Javascript syntax for creating, composing and manipulating DOM elements. 
       Use it to create web applications. It is like HTML but it is Javascript.
     `,
-    orderedList(
-      "It has zero dependencies.",
-      "It is small. It is about 2KB."
-    ),
+    p`
+    Webscript is a small Javascript library with zero dependencies.
+    `,
     p.class`mt-6``Webscript:`,
     orderedList(
       "Replaces JSX in React and other libraries.",
@@ -98,6 +97,18 @@ const content =
       "Replaces HTML in Javascript applications.",
       "Replaces HTML in your Javascript library."
     ),
+    p`Why Webscript?`,
+    orderedList(
+      `Webscript is much more capable than HTML.`,
+      `Webscript is a nicer syntax than Hyperscript.`,
+      `Webscript is more flexible and capable than HTML templating languages.`,
+      `Webscript works really well with Javasacript because Webscript is Javascript.`,
+      `No need for a compiler, babel or special tooling.`,
+      `No build step.`,
+      `Works with existing Javascript user-interface libraries.`
+    ),
+    p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
+    p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
     h2`Introduction`,
     p`Let's compare HTML to Webscript. Here is some HTML:`,
     htmlCode
@@ -158,24 +169,13 @@ const content =
     // p`Webscript uses 
     //   ${a.href`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy`.target`_blank``Javascript proxies`},
     //   so Internet Explorer 11 is not supported.`,
-    h2`Why Webscript?`,
-    orderedList(
-      `Webscript is much more capable than HTML.`,
-      `Webscript is a nicer syntax than Hyperscript.`,
-      `Webscript is more flexible and capable than HTML templating languages.`,
-      `Webscript works really well with Javasacript because Webscript is Javascript.`,
-      `No need for a compiler or special tooling.`,
-      `No build step.`,
-      `Works with existing Javascript user-interface libraries.`
-    ),
-    p`Webscript gives a great developer experience for quickly developing Javascript-based web applications.`,
-    p`See the article: ${a.href`https://dev.to/mudgen/why-webscript-4g8k`.target`_blank``Why Webscript?`} `,
+    //h2`Why Webscript?`,    
     h2`Webscript Builders`,
     p`
       Webscript builders like ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects with methods
-      that are called to build up the properties of an element. The actual element is created by calling the builder as
+      that are called to build up the properties of an element. The actual DOM element is created by calling the builder as
       a function. In the example ${code`img.src\`file.png\`()`} the ${code`src`} method call sets the 'src' property.
-      And ${code`()`} causes the img builder to be executed as a function which creates and returns the img element.
+      And ${code`()`} causes the img builder to be executed as a function which creates and returns the img DOM element.
       `,
     p`
       Note that it is
