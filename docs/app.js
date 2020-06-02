@@ -335,11 +335,13 @@ import { createObjectElement } from 'webscript/dist/createObjectElement.js'
 
 const { body, div, p } = builders(createDOMElement);
 const { svg } = builders(createSVGElement);
-const { object } = builders(createObjectElement);
-
-const myApp = div(p("hello world"))
-document.body = body(myApp);`,
-    p`The above example creates a simple webpage that says, "hello world".`,
+const { object } = builders(createObjectElement);`,    
+    p`You can write your own ${code`createElement`} function to create any kind of tree structure and custom functionality.`,
+    p`
+      You can add custom functionality to an existing ${code`createElement`} function by writing your own ${code`createElement`} function that
+      wraps or uses an existing ${code`createElement`} function.
+    `,
+    
     h2`Special Properties`,
     p`Webscript has two special properties, 'children' and 'props'.`,
     p`The children property is a way to set the children of a builder without calling the builder as function and returning the element.`,
