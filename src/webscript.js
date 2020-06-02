@@ -83,7 +83,7 @@ function createInitialBuilder(constructor, type) {
             return createBuilder(newProps, null);
           }
           if (elementName === "props") {
-            setPropertyValue.value = { ...props };
+            setPropertyValue.value = props;
           }
           else {
             setPropertyValue.value = props[elementName];

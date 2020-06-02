@@ -31,6 +31,8 @@ h3 = enhanceBuilder(h3, (builder, children) => {
   )
 })
 
+// This converts tagged template literal values into a single string.
+// Or if the value is just a string, returns the string.
 function contentValue(values) {
   const [first] = values;
   if (Array.isArray(first) && Object.isFrozen(first)) {
@@ -40,8 +42,9 @@ function contentValue(values) {
       values.push(s);
       values.push(templateArgs[index])
     }
+    return values.join("");
   }
-  return values.join("");
+  return values;
 }
 
 let navItems = [];
@@ -332,16 +335,88 @@ import { createObjectElement } from 'webscript/dist/createObjectElement.js'
 
 const { body, div, p } = builders(createDOMElement);
 const { svg } = builders(createSVGElement);
-const { objects } = builders(createObjectElement);
+const { object } = builders(createObjectElement);
 
 const myApp = div(p("hello world"))
 document.body = body(myApp);`,
     p`The above example creates a simple webpage that says, "hello world".`,
-    //h2`Special Properties`,
+    h2`Special Properties`,
+    p`Webscript has two special properties, 'children' and 'props'.`,
+    p`The children property is a way to set the children of a builder without calling the builder as function and returning the element.`,
+    p`Here is an example of setting the children property:`,
+    javascriptCode
+      `let pWithChildren = p
+                    .class\`myclass\`
+                    .children(
+                      "A link to the ", 
+                      a.href\`https://github.com/mudgen/webscript\`("Webscript"), 
+                      "project.");
 
+// Now executing and creating the element.
+document.body = body(pWithChildren())`,
+    p`The 'props' special property enables you to set the properties of a builder by passing in an object of properties. Here is an example:`,
+    javascriptCode
+      `let linkProps = {href: "https://github.com/mudgen/webscript", target: "_blank"};
+let link = a.props(linkProps)\`Webscript\`;`,
+    p`Properties passed into 'props' are merged with any existing properties in the builder.`,
+    h2`Getting Property Values`,
+    p`Every builder property has a 'value' property that can be used to get the value of the property. Here is an example:`,
+    javascriptCode
+      `let firstDiv = div.class\`myclass1 myclass2\`;
+let secondDiv = div.class(firstDiv.class.value);
+console.log(firstDiv.class.value === secondDiv.class.value); // true`,
+    p`It is possible to delete a property by calling a property function with no arguments. Here is an example:`,
+    javascriptCode
+      `let myDiv = div.class\`card\`;
+console.log(myDiv.class.value); // card
 
+console.log(myDiv.class().class.value) // undefined`,
+    h2`Enhanced Builders`,
+    p`Enhancing a builder is a way for you to specify the function that is executed when a builder is called with ${code`()`}.`,
+    p`It is useful to enhance a builder when you want specific code to execute before or after a builder is called as a function.`,
+    p`A builder is enhanced using the ${code`enhanceBuilder(builder, func)`} function that comes with Webscript.`,
+    p`
+      The ${code`enhanceBuilder`} function takes two arguments. The first argument is the builder to enhance. The second argument
+      is the function to execute when the builder is called as a function.`,
+    p`
+      The function argument ${code`func(builder, children)`} takes two arguments. The first argument
+      is the builder that is being enhanced. The second argument is the builder's children.
+      Here is an example:`,
+
+    javascriptCode
+      `import builders, { enhanceBuilder } from 'webscript';
+let { h2 } = builders(createElement);
+
+// This converts tagged template literal values into a single string.
+// Or if the value is just a string, returns the string.
+function contentValue(values) {
+  const [first] = values;
+  if (Array.isArray(first) && Object.isFrozen(first)) {
+    const [strings, ...templateArgs] = values;
+    values = [];
+    for (const [index, s] of strings.entries()) {
+      values.push(s);
+      values.push(templateArgs[index])
+    }
+    return values.join("");
+  }
+  return values;
+}
+
+const items = [];
+
+h2 = enhanceBuilder(h2, (builder, children) => {
+  let content = contentValue(children);  
+  items.push(content)
+  return builder.class\`text-2xl\`(    
+    a.class\`text-cool-gray-400 \`.href\`#\`("#"),
+    content
+  )
+});`,
 
   )
+
+
 
 function turnOffMenu() {
   content.classList.remove("hidden")
@@ -377,8 +452,8 @@ function toggleMenu() {
 
 const contentNav =
   div.class``(
-    div.class`lg:hidden fixed top-0 z-20 bg-cool-gray-200 w-full max-w-2xl flex items-center justify-between`(
-      h1.class`pl-3 sm:pl-10 text-3xl font-medium pb-1`(
+    div.class`lg:hidden fixed top-0 z-20 bg-cool-gray-200 w-full max-w-2xl flex items-center justify-between h-12`(
+      h1.class`pl-3 sm:pl-10 text-2xl font-medium pb-1`(
         a.class`text-cool-gray-800`.href`#`.onclick(turnOffMenu)`Webscript`
       ),
       button.id`menu-button`.class`inline-flex items-center justify-center p-2 mr-1 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out`
@@ -451,7 +526,7 @@ let app =
     div.class`lg:flex-1`(
       contentNav,
     ),
-    div.class`bg-white lg:shadow px-4 sm:px-10 lg:rounded lg:max-w-3xl max-w-2xl lg:text-lg leading-relaxed mt-12 lg:mt-3 pb-2`(
+    div.class`bg-white lg:shadow px-4 sm:px-10 lg:rounded lg:max-w-3xl max-w-2xl lg:text-lg leading-relaxed mt-12 lg:mt-3 pb-4`(
       content
     )
   );
