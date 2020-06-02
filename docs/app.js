@@ -1,10 +1,35 @@
 const CodeMirror = window.CodeMirror;
 import builders from '../dist/webscript.esm.js';
-//import builders from '../src/webscript.js';
+//import builders, { enhanceBuilder } from '../src/webscript.js';
 import createElement from '../dist/createDOMElement.esm.js';
 import createSVGElement from '../dist/createSVGElement.esm.js';
-let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span, button } = builders(createElement);
+let { body, div, p, img, nav, h1, h2, h3, ol, li, pre, code, a, span, button, i } = builders(createElement);
 let { svg, path, title } = builders(createSVGElement);
+
+let v = i.id`testhere`;
+let b = i.alt`what?`;
+//console.log(v.id === b.id)
+
+h2 = enhanceBuilder(h2, (builder, children) => {
+  let content = contentValue(children);
+  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
+  navItems.push([hash, content])
+  return builder.class`h-hover relative text-2xl lg:text-3xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200 leading-snug`(
+    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-5`.href("#" + hash)`#`,
+    content
+  )
+})
+
+h3 = enhanceBuilder(h3, (builder, children) => {
+  let content = contentValue(children);
+  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
+  return builder.class`h-hover relative text-xl lg:text-2xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200`(
+    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-4 `.href("#" + hash)`#`,
+    content
+  )
+})
 
 function contentValue(values) {
   const [first] = values;
@@ -20,29 +45,6 @@ function contentValue(values) {
 }
 
 let navItems = [];
-
-h2 = h2.exec((builder, children) => {
-  let content = contentValue(children);
-  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
-  navItems.push([hash, content])
-  return builder.class`h-hover relative text-2xl lg:text-3xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200 leading-snug`(
-    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
-    a.class`text-cool-gray-400 -ml-4 lg:-ml-5`.href("#" + hash)`#`,
-    content
-  )
-})
-
-h3 = h3.exec((builder, children) => {
-  let content = contentValue(children);
-  let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
-  return builder.class`h-hover relative text-xl lg:text-2xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200`(
-    a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
-    a.class`text-cool-gray-400 -ml-4 lg:-ml-4 `.href("#" + hash)`#`,
-    content
-  )
-})
-
-h3 = h3.class`text-xl font-medium mt-10`;
 
 function editorContainer() {
   return div.class`rounded-md bg-cool-gray-100`();
@@ -335,6 +337,10 @@ const { objects } = builders(createObjectElement);
 const myApp = div(p("hello world"))
 document.body = body(myApp);`,
     p`The above example creates a simple webpage that says, "hello world".`,
+    h2`Special Properties`,
+
+
+
   )
 
 function turnOffMenu() {
@@ -342,7 +348,11 @@ function turnOffMenu() {
   let menuButton = document.getElementById("menu-button");
   menuButton.firstElementChild.classList.remove("hidden")
   menuButton.firstElementChild.nextSibling.classList.add("hidden")
+  let value = [...document.getElementById("nav").classList];
+  console.log(value)
   document.getElementById("nav").classList.add("hidden");
+  value = [...document.getElementById("nav").classList];
+  console.log(value)
 }
 
 function turnOnMenu() {

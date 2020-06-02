@@ -1,6 +1,7 @@
 
 import { createElement } from './libs/viv.js';
 import builders from '../dist/webscript.modern.js'
+//import builders from '../src/webscript.js';
 import examples from './examples.js';
 //import minify = require('html-minifier-terser');
 

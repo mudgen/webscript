@@ -15,38 +15,20 @@ function templateValues(args) {
 
 let interpunct = new RegExp("·", "g");
 
+export const enhanceBuilder = (builder, func) => {
+  builder.__webscript_enhancer = func;
+  return builder;
+}
+
 function createInitialBuilder(constructor, type) {
-  function setPropertyValue(...args) {
-    let [value] = args;
-    let { props, prop } = this.__element_info__;
-    if (typeof value === "undefined") {
-      props = { ...props };
-      delete props[prop];
-      return createBuilder({ props, prop: null });
-    }
-    else if (Array.isArray(value) && Object.isFrozen(value)) {
-      value = templateValues(args).join("");
-    }
-    else if (args.length > 1) {
-      value = args;
-    }
-    props = { ...props, [prop]: value };
-    return createBuilder({ props, prop: null });
-  }
-  function setPropsValues(props) {
-    let { props: existingProps } = this.__element_info__;
-    props = { ...existingProps, ...props };
-    return createBuilder({ props, prop: null });
-  }
-  function createBuilder(propsInfo) {
+  function createBuilder(props, prop) {    
     let builder = new Proxy(() => { }, {
       apply(target, thisArg, children) {
-        let { props } = builder.__element_info__;
-        if (typeof props.exec === "function") {
-          let exec = props.exec;
-          delete props.exec;
-          let result = exec(builder, children);
-          props.exec = exec;
+        if (typeof target.__webscript_enhancer === "function") {
+          let __webscript_enhancer = target.__webscript_enhancer;
+          delete target.__webscript_enhancer;
+          let result = __webscript_enhancer(builder, children);
+          target.__webscript_enhancer = __webscript_enhancer;
           return result;
         }
         let [first] = children;
@@ -60,35 +42,60 @@ function createInitialBuilder(constructor, type) {
         }
         for (let i = 0; i < children.length; i++) {
           let arg = children[i];
-          if (typeof arg === "function" && arg.__element_info__) {
+          if (typeof arg === "function" && arg.__is_webscript_element === true) {
             children[i] = arg();
           }
         }
         return constructor(type, props, ...children);
       },
-      get(target, prop) {
-        if (prop === "props") {
-          return setPropsValues;
-        }
-        else if (prop === "__element_info__") {          
-          return target[prop]
-        }
-        else if (typeof prop === "string") {
-          if (prop.indexOf("·") !== -1) {
-            prop = prop.replace(interpunct, "-");
+      get(target, elementName) {        
+        if (typeof elementName === "string") {
+          if (elementName === "__is_webscript_element") {
+            return true;
           }
-          if (prop.endsWith("Value") && prop.length > 5) {
-            return target.__element_info__.props[prop.slice(0, -5)];
+          else if (elementName === "__webscript_enhancer") {
+            return target[elementName]
           }
-          target.__element_info__.prop = prop;
+          else if (elementName.indexOf("·") !== -1) {
+            elementName = elementName.replace(interpunct, "-");
+          }
+
+          function setPropertyValue(...args) {
+            let [value] = args;
+            if (typeof value === "undefined") {
+              if (prop === "props" && Object.prototype.toString.call(value) === '[object Object]') {
+                return createBuilder({}, null);
+              }
+              let newProps = { ...props };
+              delete newProps[prop];
+              return createBuilder(newProps, null);
+            }
+            else if (Array.isArray(value) && Object.isFrozen(value)) {
+              value = templateValues(args).join("");
+            }
+            else if (args.length > 1) {
+              value = args;
+            }
+            else if (prop === "props" && Object.prototype.toString.call(value) === '[object Object]') {
+              return createBuilder({ ...props, ...first }, null);
+            }
+            const newProps = { ...props, [prop]: value };
+            return createBuilder(newProps, null);
+          }
+          if (elementName === "props") {
+            setPropertyValue.value = {...props};
+          }
+          else {
+            setPropertyValue.value = props[elementName];
+          }
+          prop = elementName;
           return setPropertyValue;
         }
       }
     })
-    builder.__element_info__ = propsInfo;
     return builder;
   }
-  return createBuilder({ props: {}, prop: null });
+  return createBuilder({}, null);
 }
 
 
@@ -98,8 +105,8 @@ function builders(constructor, types = []) {
   }
   if (types.length > 0) {
     let builders = [];
-    for (const element of types) {
-      builders.push(createInitialBuilder(constructor, element));
+    for (const type of types) {
+      builders.push(createInitialBuilder(constructor, type));
     }
     return builders;
   }
@@ -118,3 +125,4 @@ function builders(constructor, types = []) {
 }
 
 export default builders;
+
