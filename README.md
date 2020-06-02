@@ -2,6 +2,8 @@
 
 Webscript is an HTML-like Javascript syntax for defining, creating, composing and manipulating DOM elements. It is for creating web pages, web sites, web applications. It is like HTML but it is Javascript.
 
+Read the documentation: [https://mudgen.github.io/webscript/docs/](https://mudgen.github.io/webscript/docs/)
+
 1. It has zero dependencies.
 2. It is small. It's size is about 2KB.
 
@@ -29,6 +31,6 @@ div.class`card-image`(
   span.class`card-title`("Card Title"))
 ```
 
-Please see the documentation here: https://mudgen.github.io/webscript/docs/
+Please see the documentation here: [https://mudgen.github.io/webscript/docs/](https://mudgen.github.io/webscript/docs/)
 
-Follow me on twitter: https://twitter.com/mudgen
+Follow me on twitter: [https://twitter.com/mudgen](https://twitter.com/mudgen)
