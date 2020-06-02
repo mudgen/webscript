@@ -337,7 +337,7 @@ const { objects } = builders(createObjectElement);
 const myApp = div(p("hello world"))
 document.body = body(myApp);`,
     p`The above example creates a simple webpage that says, "hello world".`,
-    h2`Special Properties`,
+    //h2`Special Properties`,
 
 
 
