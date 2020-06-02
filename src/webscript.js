@@ -21,7 +21,7 @@ export const enhanceBuilder = (builder, func) => {
 }
 
 function createInitialBuilder(constructor, type) {
-  function createBuilder(props, prop) {    
+  function createBuilder(props, prop) {
     let builder = new Proxy(() => { }, {
       apply(target, thisArg, children) {
         if (typeof target.__webscript_enhancer === "function") {
@@ -48,7 +48,7 @@ function createInitialBuilder(constructor, type) {
         }
         return constructor(type, props, ...children);
       },
-      get(target, elementName) {        
+      get(target, elementName) {
         if (typeof elementName === "string") {
           if (elementName === "__is_webscript_element") {
             return true;
@@ -77,13 +77,13 @@ function createInitialBuilder(constructor, type) {
               value = args;
             }
             else if (prop === "props" && Object.prototype.toString.call(value) === '[object Object]') {
-              return createBuilder({ ...props, ...first }, null);
+              return createBuilder({ ...props, ...value }, null);
             }
             const newProps = { ...props, [prop]: value };
             return createBuilder(newProps, null);
           }
           if (elementName === "props") {
-            setPropertyValue.value = {...props};
+            setPropertyValue.value = { ...props };
           }
           else {
             setPropertyValue.value = props[elementName];
