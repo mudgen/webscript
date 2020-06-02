@@ -1,5 +1,5 @@
 const CodeMirror = window.CodeMirror;
-import builders from '../dist/webscript.esm.js';
+import builders, { enhanceBuilder } from '../dist/webscript.esm.js';
 //import builders, { enhanceBuilder } from '../src/webscript.js';
 import createElement from '../dist/createDOMElement.esm.js';
 import createSVGElement from '../dist/createSVGElement.esm.js';
