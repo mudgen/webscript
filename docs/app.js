@@ -297,21 +297,20 @@ function App() {
            "Learn React"
          ))))
 }`,
+
     p`
-    React function components are functions so they can be used directly within Webscript.
-  `,
-    p`
-    However class-based React components are not functions. They can still be used in Webscript by passing them in an array to 
-    ${code`builders`} in order to convert them into functions. In the example below the ${code`StrictMode`} component is converted to a function and used. 
-    The ${code`App`} function component we created in our last example is used directly without any conversion.
+    React components can be used in Webscript by passing them in an array to 
+    ${code`builders`} in order to convert them into Webcript builders. Here is an example:
   `,
     javascriptCode
       `import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppComp from './App';
 import builders from 'webscript';
 
-const [StrictMode] = builders(React.createElement, [React.StrictMode]);
+const [StrictMode, App] = elementBuilders(React.createElement,
+  [ React.StrictMode, AppComp ]
+);
 
 ReactDOM.render(
   StrictMode(
@@ -414,9 +413,35 @@ h2 = enhanceBuilder(h2, (builder, children) => {
     content
   )
 });`,
-
+    h2`Hyphens in Property Names`,
+    p`
+    Some DOM properties like ${code`data-*`} ${code`aria-*`} have hyphens in their names.  Hyphens can't be used in the Javascript dot notation we usually use
+    to access properties. Such properties can be accessed by builders with bracket notation:
+  `,
+    javascriptCode
+      `let progressBar = 
+  div.id\`percent-loaded\`
+      .role\`progressbar\`
+      ["aria-valuenow"]\`75\`
+      ["aria-valuemin"]\`0\`
+      ["aria-valuemax"]\`100\`;`,
+    p`
+      This isn't so nice and is inconsistent with how we normally access property values.  Therefore the character '·', which is called interpunct or middle dot, can be used 
+      in place of hyphens. Webscript will replace interpuncts with hyphens. Interpuncts are unicode character 00B7. Here's an example using interpuncts:
+    `,
+  javascriptCode
+      `let progressBar = 
+  div.id\`percent-loaded\`
+      .role\`progressbar\`
+      .aria·valuenow\`75\`
+      .aria·valuemin\`0\`
+      .aria·valuemax\`100\`;`,
+    p`To make interpuncts easy to type you can add a key binding to your programming editor to insert an interpuct when a particular key is pressed. For example the F9 key could be used
+    because it is directly above the hyphen key on some keyboards.
+    `
   )
 
+//div.id`percent-loaded`.role`progressbar`.aria·valuenow`75`.aria·valuemin`0`.aria·valuemax`100`
 
 
 function turnOffMenu() {
@@ -476,7 +501,7 @@ const contentNav =
       nav.class`w-64 pr-3`(
 
         navItems.map((item) => {
-          return a.class`mt-1 group flex items-center px-3 py-3 leading-6 font-medium text-cool-gray-600 rounded-md hover:text-cool-gray-800 hover:bg-cool-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150`
+          return a.class`mt-1 group flex items-center px-3 py-2 leading-6 font-medium text-cool-gray-600 rounded-md hover:text-cool-gray-800 hover:bg-cool-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150`
             .href("#" + item[0])
             .onclick(turnOffMenu)
             (item[1])
