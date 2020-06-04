@@ -16,7 +16,7 @@ h2 = enhanceBuilder(h2, (builder, children) => {
   navItems.push([hash, content])
   return builder.class`h-hover relative text-2xl lg:text-3xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200 leading-snug`(
     a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
-    a.class`text-cool-gray-400 -ml-4 lg:-ml-5`.href("#" + hash)`#`,
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-5 pr-1`.href("#" + hash)`#`,
     content
   )
 })
@@ -26,7 +26,7 @@ h3 = enhanceBuilder(h3, (builder, children) => {
   let hash = content.trim().replace(/\s+/g, "-").toLowerCase();
   return builder.class`h-hover relative text-xl lg:text-2xl border-b-2 font-medium py-2 lg:py-3 my-3 lg:my-4 border-cool-gray-200`(
     a.class`absolute left-0 top-0 -mt-12 lg:mt-0`.name(hash),
-    a.class`text-cool-gray-400 -ml-4 lg:-ml-4 `.href("#" + hash)`#`,
+    a.class`text-cool-gray-400 -ml-4 lg:-ml-4 pr-1`.href("#" + hash)`#`,
     content
   )
 })
@@ -429,7 +429,7 @@ h2 = enhanceBuilder(h2, (builder, children) => {
       This isn't so nice and is inconsistent with how we normally access property values.  Therefore the character '·', which is called interpunct or middle dot, can be used 
       in place of hyphens. Webscript will replace interpuncts with hyphens. Interpuncts are unicode character 00B7. Here's an example using interpuncts:
     `,
-  javascriptCode
+    javascriptCode
       `let progressBar = 
   div.id\`percent-loaded\`
       .role\`progressbar\`
