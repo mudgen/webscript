@@ -169,7 +169,7 @@ const content =
     h2`Installation`,
     shellCode`npm install webscript`,
     p.class`py-4``Or use a CDN:`,
-    javascriptCode`import builders from 'https://cdn.jsdelivr.net/npm/webscript@0.0.11/dist/webscript.esm.js'`,
+    javascriptCode`import builders from 'https://cdn.jsdelivr.net/npm/webscript@0.2.0/dist/webscript.esm.js'`,
     p`Webscript is available in the following Javascript formats: ES6, ES5, CommonJS and UMD.`,
     // p`Webscript uses 
     //   ${a.href`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy`.target`_blank``Javascript proxies`},
@@ -450,10 +450,8 @@ function turnOffMenu() {
   menuButton.firstElementChild.classList.remove("hidden")
   menuButton.firstElementChild.nextSibling.classList.add("hidden")
   let value = [...document.getElementById("nav").classList];
-  console.log(value)
   document.getElementById("nav").classList.add("hidden");
   value = [...document.getElementById("nav").classList];
-  console.log(value)
 }
 
 function turnOnMenu() {
@@ -475,6 +473,8 @@ function toggleMenu() {
     turnOffMenu();
   }
 }
+
+
 
 const contentNav =
   div.class``(
