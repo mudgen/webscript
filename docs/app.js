@@ -134,6 +134,9 @@ const content =
       In the above example ${code`div`}, ${code`img`} and ${code`span`} are Javascript objects. And ${code`class`},
       ${code`src`} and ${code`alt`} are Javascript methods.
     `,
+    p(
+      a.href`https://mudgen.github.io/webscript/html2webscript/`.target`_blank``See more examples of Webscript.`
+    ),
     h3`Tagged Template Literals`,
     p`
       Webscript uses tagged template literals which is the syntax above with the backticks. For example ${code`src\`images/sample-1.jpg\``} is      
