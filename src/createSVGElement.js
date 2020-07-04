@@ -1,7 +1,6 @@
 import addChild from './helpers/addChild.js';
 
-function createElement(tagName, props, ...children) {
-  tagName = tagName.toLowerCase();
+function createElement(tagName, props, ...children) {  
   const element = document.createElementNS("http://www.w3.org/2000/svg", tagName);
   for (let key in props) {
     let value = props[key];
